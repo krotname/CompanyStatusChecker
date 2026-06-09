@@ -19,6 +19,8 @@
 - Added Docker image build and `/health` smoke test to CI.
 - Added OCI metadata labels to the Docker image.
 - Removed hardcoded JAR version from Docker and release automation.
+- Added GHCR Docker image publishing to the tag release workflow.
+- Made the release build start from a clean Maven target directory.
 
 ## 1.1.0
 

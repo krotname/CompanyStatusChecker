@@ -16,7 +16,7 @@ This repository is optimized for quick external review: each quality claim is ti
 | Security scanning | CodeQL Java workflow | `.github/workflows/codeql.yml` |
 | Supply chain | CycloneDX SBOM XML/JSON generated during package | `target/bom.xml`, `target/bom.json` |
 | Dependency risk | Dependency Review for PR dependency changes | `.github/workflows/dependency-review.yml` |
-| Release trust | GitHub artifact provenance and SBOM attestations | `.github/workflows/release.yml` |
+| Release trust | GitHub artifact provenance, SBOM attestations, and GHCR Docker image publishing | `.github/workflows/release.yml` |
 | Repository health | Security policy, code of conduct, contribution guide, issue forms | root docs + `.github/ISSUE_TEMPLATE` |
 
 ## Review Checklist

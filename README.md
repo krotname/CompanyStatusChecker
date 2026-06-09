@@ -133,6 +133,7 @@ docker compose up --build
 - CycloneDX SBOM (`target/bom.xml`, `target/bom.json`) для supply-chain review.
 - Dependency Review блокирует PR с новыми runtime-зависимостями высокой критичности.
 - Release workflow выпускает artifact provenance и SBOM attestations для JAR.
+- Release workflow публикует Docker image в `ghcr.io/krotname/company-status-checker` для tag-релизов.
 - Community health files: `SECURITY.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, issue/PR templates.
 
 ```bash
@@ -185,6 +186,7 @@ This API is described in `docs/openapi.yaml`.
 - CycloneDX SBOM generation for dependency transparency.
 - Dependency Review blocks pull requests that introduce high-severity runtime vulnerabilities.
 - Release workflow emits artifact provenance and SBOM attestations for the JAR.
+- Release workflow publishes the Docker image to `ghcr.io/krotname/company-status-checker` for tag releases.
 - Community health files and issue forms for consistent public collaboration.
 
 ### Docker
