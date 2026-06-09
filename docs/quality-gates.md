@@ -9,6 +9,8 @@ This repository is optimized for quick external review: each quality claim is ti
 | UI smoke | Embedded HTTP server route checks tagged with `@Tag("ui")` | `./mvnw -q test -Pui-tests` |
 | Contract tests | DaData parser and OpenAPI checks tagged with `@Tag("contract")` | `./mvnw -q test -Pcontract-tests` |
 | Full verification | Tests, package, SBOM, Checkstyle, JaCoCo gate | `./mvnw -q verify` |
+| Reproducible build | Maven archives use fixed `project.build.outputTimestamp` | `pom.xml` |
+| Release artifacts | Runnable, source, and Javadoc jars are built during `package` | `target/checker-corporate-*.jar` |
 | Coverage | JaCoCo line coverage threshold `LINE >= 0.80` | `pom.xml` |
 | Mutation testing | PIT mutation score threshold `mutationThreshold >= 80` | `./mvnw -q verify -Pmutation-tests` |
 | Style | Checkstyle runs during `verify` and includes test sources | `checkstyle.xml` + Maven plugin |
@@ -21,7 +23,7 @@ This repository is optimized for quick external review: each quality claim is ti
 | Security scanning | CodeQL Java workflow | `.github/workflows/codeql.yml` |
 | Supply chain | CycloneDX SBOM XML/JSON generated during package | `target/bom.xml`, `target/bom.json` |
 | Dependency risk | Dependency Review for PR dependency changes | `.github/workflows/dependency-review.yml` |
-| Release trust | GitHub artifact provenance, SBOM attestations, and GHCR Docker image publishing | `.github/workflows/release.yml` |
+| Release trust | GitHub artifact provenance, SBOM attestations, source/Javadoc jars, and GHCR Docker image publishing | `.github/workflows/release.yml` |
 | Repository health | Security policy, code of conduct, contribution guide, issue forms | root docs + `.github/ISSUE_TEMPLATE` |
 
 ## Review Checklist

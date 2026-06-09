@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.title="CompanyStatusChecker" \
 
 WORKDIR /app
 
-COPY target/checker-corporate-*.jar app.jar
+COPY target/checker-corporate-*.[0-9].jar app.jar
 
 ENV DADATA_TOKEN=""
 

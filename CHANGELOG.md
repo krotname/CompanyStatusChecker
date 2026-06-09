@@ -26,6 +26,8 @@
 - Covered 12-digit INN checksum validation and encoded query parameter handling.
 - Added SpotBugs static bug-pattern analysis to the default Maven verification gate.
 - Uploaded SpotBugs XML reports from CI.
+- Added reproducible Maven archive timestamps.
+- Added attached source and Javadoc jars to Maven package, CI artifacts, and tag releases.
 
 ## 1.1.0
 

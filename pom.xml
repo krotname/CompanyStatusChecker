@@ -10,12 +10,35 @@
     <name>Checker Corporate</name>
     <description>Validate Russian legal entity INN and check status in DaData.</description>
     <url>https://github.com/krotname/CompanyStatusChecker</url>
+    <inceptionYear>2026</inceptionYear>
     <licenses>
         <license>
             <name>GNU General Public License v3.0</name>
             <url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
+    <developers>
+        <developer>
+            <id>krotname</id>
+            <name>krotname</name>
+            <url>https://github.com/krotname</url>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:https://github.com/krotname/CompanyStatusChecker.git</connection>
+        <developerConnection>scm:git:https://github.com/krotname/CompanyStatusChecker.git</developerConnection>
+        <url>https://github.com/krotname/CompanyStatusChecker</url>
+        <tag>HEAD</tag>
+    </scm>
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/krotname/CompanyStatusChecker/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>GitHub Actions</system>
+        <url>https://github.com/krotname/CompanyStatusChecker/actions</url>
+    </ciManagement>
 
     <properties>
         <java.version>21</java.version>
@@ -24,10 +47,14 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.build.outputTimestamp>2026-06-09T00:00:00Z</project.build.outputTimestamp>
 
         <gson.version>2.14.0</gson.version>
         <junit.version>6.1.0</junit.version>
         <jacoco.version>0.8.15</jacoco.version>
+        <maven-jar.version>3.5.0</maven-jar.version>
+        <maven-source.version>3.4.0</maven-source.version>
+        <maven-javadoc.version>3.12.0</maven-javadoc.version>
         <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
         <maven-shade.version>3.6.2</maven-shade.version>
         <maven-enforcer.version>3.6.3</maven-enforcer.version>
@@ -127,6 +154,59 @@
                         <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Built-By>GitHub Actions or local Maven</Built-By>
+                            <Build-Jdk-Spec>${java.version}</Build-Jdk-Spec>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc.version}</version>
+                <configuration>
+                    <doclint>all,-missing</doclint>
+                    <failOnError>true</failOnError>
+                    <quiet>true</quiet>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>

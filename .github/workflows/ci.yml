@@ -83,6 +83,14 @@ jobs:
 
           docker logs "$container_id"
           exit 1
+      - name: Upload Maven package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: maven-package-artifacts
+          path: |
+            target/checker-corporate-*.jar
+            !target/original-*.jar
+          if-no-files-found: error
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v4
         with:

@@ -29,12 +29,24 @@ jobs:
       - name: Resolve release artifact
         run: |
           set -euo pipefail
-          release_jar="$(find target -maxdepth 1 -type f -name 'checker-corporate-*.jar' ! -name 'original-*' -print -quit)"
+          release_jar="$(find target -maxdepth 1 -type f -name 'checker-corporate-*.jar' ! -name 'original-*' ! -name '*-sources.jar' ! -name '*-javadoc.jar' -print -quit)"
+          sources_jar="$(find target -maxdepth 1 -type f -name 'checker-corporate-*-sources.jar' -print -quit)"
+          javadoc_jar="$(find target -maxdepth 1 -type f -name 'checker-corporate-*-javadoc.jar' -print -quit)"
           if [ -z "$release_jar" ]; then
             echo "Release JAR was not found" >&2
             exit 1
           fi
+          if [ -z "$sources_jar" ]; then
+            echo "Sources JAR was not found" >&2
+            exit 1
+          fi
+          if [ -z "$javadoc_jar" ]; then
+            echo "Javadoc JAR was not found" >&2
+            exit 1
+          fi
           echo "RELEASE_JAR=$release_jar" >> "$GITHUB_ENV"
+          echo "SOURCES_JAR=$sources_jar" >> "$GITHUB_ENV"
+          echo "JAVADOC_JAR=$javadoc_jar" >> "$GITHUB_ENV"
       - name: Generate artifact provenance
         uses: actions/attest@v4
         with:
@@ -75,5 +87,7 @@ jobs:
           generate_release_notes: true
           files: |
             ${{ env.RELEASE_JAR }}
+            ${{ env.SOURCES_JAR }}
+            ${{ env.JAVADOC_JAR }}
             target/bom.xml
             target/bom.json
