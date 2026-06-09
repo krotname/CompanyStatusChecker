@@ -129,6 +129,7 @@ docker compose up --build
 - `CI` (`.github/workflows/ci.yml`) — `./mvnw verify`.
 - `CI` отдельно запускает `unit`, `integration`, `ui` и `contract` test jobs с публикацией Surefire reports.
 - Docker image build + `/health` smoke test in CI.
+- Docker image запускается под non-root пользователем `app` и содержит Java-based `HEALTHCHECK`.
 - `JaCoCo` с минимальным порогом покрытия `LINE >= 0.80`.
 - `PIT` mutation testing с минимальным порогом `mutationThreshold >= 80`.
 - `SpotBugs` bug-pattern analysis с `effort=Max`, `threshold=Low` и fail-on-warning режимом.
@@ -192,6 +193,7 @@ This API is described in `docs/openapi.yaml`.
 - Static bug-pattern analysis with SpotBugs in the default `verify` gate.
 - Reproducible Maven artifacts through a fixed `project.build.outputTimestamp`.
 - Source and Javadoc jars are built during `package` and attached to CI/release artifacts.
+- Docker image runs as the non-root `app` user and includes a Java-based `HEALTHCHECK`.
 - Security and release automation in GitHub Actions.
 - Clear runtime setup: environment variable or properties resource.
 - CycloneDX SBOM generation for dependency transparency.

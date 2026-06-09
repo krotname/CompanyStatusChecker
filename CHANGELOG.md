@@ -28,6 +28,8 @@
 - Uploaded SpotBugs XML reports from CI.
 - Added reproducible Maven archive timestamps.
 - Added attached source and Javadoc jars to Maven package, CI artifacts, and tag releases.
+- Hardened Docker image runtime with a non-root user and Java-based healthcheck.
+- Added CI checks for Docker image user, healthcheck metadata, and in-container healthcheck execution.
 
 ## 1.1.0
 

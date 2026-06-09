@@ -18,6 +18,7 @@ This repository is optimized for quick external review: each quality claim is ti
 | CI | GitHub Actions runs category test jobs plus full `./mvnw -B clean verify` on push and PR | `.github/workflows/ci.yml` |
 | Test reports | CI uploads Surefire reports for unit, integration, UI, and contract jobs | `.github/workflows/ci.yml` |
 | Docker runtime | CI builds the image and checks `/health` from a running container | `.github/workflows/ci.yml` |
+| Container hardening | Docker image runs as non-root `app`, declares `HEALTHCHECK`, and CI verifies both image metadata and healthcheck execution | `Dockerfile` + `.github/workflows/ci.yml` |
 | Static analysis reports | CI uploads the SpotBugs XML report | `target/spotbugsXml.xml` |
 | Mutation reports | Dedicated workflow publishes PIT HTML/XML reports | `.github/workflows/mutation-testing.yml` |
 | Security scanning | CodeQL Java workflow | `.github/workflows/codeql.yml` |

@@ -7,10 +7,19 @@ LABEL org.opencontainers.image.title="CompanyStatusChecker" \
 
 WORKDIR /app
 
+RUN groupadd --system app && useradd --system --gid app --home-dir /app --shell /usr/sbin/nologin app
+
 COPY target/checker-corporate-*.[0-9].jar app.jar
+
+RUN chown app:app /app/app.jar
 
 ENV DADATA_TOKEN=""
 
 EXPOSE 8080
+
+USER app
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD ["java", "-cp", "/app/app.jar", "com.krotname.checker.ContainerHealthCheck"]
 
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

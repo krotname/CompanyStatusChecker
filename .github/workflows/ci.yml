@@ -68,21 +68,37 @@ jobs:
         run: ./mvnw -B clean verify
       - name: Build Docker image
         run: docker build --pull -t company-status-checker:ci .
+      - name: Inspect Docker image metadata
+        run: |
+          set -euo pipefail
+          image_user="$(docker image inspect company-status-checker:ci --format '{{ .Config.User }}')"
+          if [ "$image_user" != "app" ]; then
+            echo "Expected Docker image to run as app, got: $image_user" >&2
+            exit 1
+          fi
+          docker image inspect company-status-checker:ci --format '{{ json .Config.Healthcheck.Test }}' | grep -q 'ContainerHealthCheck'
       - name: Smoke test Docker image
         run: |
           set -euo pipefail
           container_id="$(docker run -d -e DADATA_TOKEN=dummy -p 18080:8080 company-status-checker:ci --server 8080)"
           trap 'docker rm -f "$container_id" >/dev/null 2>&1 || true' EXIT
 
+          ready=0
           for attempt in {1..30}; do
             if curl -fsS http://127.0.0.1:18080/health | grep -q '"status":"ok"'; then
-              exit 0
+              ready=1
+              break
             fi
             sleep 1
           done
 
+          if [ "$ready" -ne 1 ]; then
+            docker logs "$container_id"
+            exit 1
+          fi
+
+          docker exec "$container_id" java -cp /app/app.jar com.krotname.checker.ContainerHealthCheck
           docker logs "$container_id"
-          exit 1
       - name: Upload Maven package artifacts
         uses: actions/upload-artifact@v4
         with:
