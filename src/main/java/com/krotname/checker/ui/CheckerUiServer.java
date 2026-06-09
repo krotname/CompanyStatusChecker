@@ -107,7 +107,12 @@ public final class CheckerUiServer {
                 .filter(entry -> entry.contains("="))
                 .collect(Collectors.toMap(
                         token -> token.split("=", 2)[0],
-                        token -> token.split("=", 2).length > 1 ? decode(token.split("=", 2)[1]) : ""
+                        token -> {
+                            String[] parts = token.split("=", 2);
+                            return decode(parts.length > 1 ? parts[1] : "");
+                        },
+                        (existing, replacement) -> existing,
+                        java.util.LinkedHashMap::new
                 ));
     }
 
@@ -136,7 +141,11 @@ public final class CheckerUiServer {
     }
 
     private String decode(String value) {
-        return java.net.URLDecoder.decode(value, StandardCharsets.UTF_8);
+        try {
+            return java.net.URLDecoder.decode(value, StandardCharsets.UTF_8);
+        } catch (IllegalArgumentException e) {
+            return value;
+        }
     }
 
 }

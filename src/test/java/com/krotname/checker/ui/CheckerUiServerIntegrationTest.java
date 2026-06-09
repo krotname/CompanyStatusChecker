@@ -54,12 +54,28 @@ class CheckerUiServerIntegrationTest {
     }
 
     @Test
+    void shouldPreferFirstDuplicateInnParameter() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/api/check?inn=first%2Ddup&inn=9710083390")).GET().build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode());
+        assertTrue(response.body().contains("\"inn\": \"first-dup\""), response.body());
+    }
+
+    @Test
     void shouldCheckInnViaHttpApi() throws Exception {
         HttpRequest request = HttpRequest.newBuilder(uri("/api/check?inn=9710083390")).GET().build();
         HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
         assertTrue(response.body().contains("\"status\": \"ACTIVE\""), response.body());
         assertTrue(response.body().contains("\"inn\": \"9710083390\""));
+    }
+
+    @Test
+    void shouldDecodePercentEncodedInnParameter() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/api/check?inn=9710%200883390")).GET().build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode());
+        assertTrue(response.body().contains("\"inn\": \"9710 0883390\""), response.body());
     }
 
     @Test

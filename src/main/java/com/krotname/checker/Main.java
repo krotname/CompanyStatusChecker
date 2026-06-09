@@ -42,7 +42,10 @@ public final class Main {
             System.out.printf("Checker UI server started at http://localhost:%d%n", boundPort);
             // Keep the process alive; this is a demo-only console process container.
             Thread.currentThread().join();
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.out.println("Server thread interrupted.");
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
