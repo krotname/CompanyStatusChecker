@@ -54,14 +54,14 @@ export DADATA_TOKEN=your_token # macOS/Linux
 
 ```bash
 ./mvnw -q -DskipTests package
-java -jar target/checker-corporate-1.1.0.jar 9710083390
+java -jar target/checker-corporate-*.jar 9710083390
 ```
 
 #### Веб UI
 
 ```bash
 ./mvnw -q -DskipTests package
-java -jar target/checker-corporate-1.1.0.jar --server 8080
+java -jar target/checker-corporate-*.jar --server 8080
 ```
 
 Откройте `http://localhost:8080`.
@@ -165,7 +165,7 @@ cp src/main/resources/checker.example.properties src/main/resources/checker.prop
 # token=<YOUR_DADATA_TOKEN>
 
 ./mvnw -q -DskipTests package
-java -jar target/checker-corporate-1.1.0.jar 9710083390
+java -jar target/checker-corporate-*.jar 9710083390
 ```
 
 On Windows, use `mvnw.cmd` instead of `./mvnw`.

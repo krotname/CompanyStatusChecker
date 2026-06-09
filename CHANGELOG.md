@@ -18,6 +18,7 @@
 - Switched CI, release, and documentation commands to the project-local Maven Wrapper.
 - Added Docker image build and `/health` smoke test to CI.
 - Added OCI metadata labels to the Docker image.
+- Removed hardcoded JAR version from Docker and release automation.
 
 ## 1.1.0
 
