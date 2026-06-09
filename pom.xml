@@ -373,10 +373,10 @@
                         </dependencies>
                         <configuration>
                             <targetClasses>
-                                <param>com.krotname.checker*</param>
+                                <param>com.krotname.checker.*</param>
                             </targetClasses>
                             <targetTests>
-                                <param>com.krotname.checker*</param>
+                                <param>com.krotname.checker.*</param>
                             </targetTests>
                             <threads>2</threads>
                             <timestampedReports>false</timestampedReports>
