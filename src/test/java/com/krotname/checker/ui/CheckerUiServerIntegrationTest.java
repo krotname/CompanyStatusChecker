@@ -95,6 +95,7 @@ class CheckerUiServerIntegrationTest {
         HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
         assertTrue(response.body().contains("<h1>Checker Corporate</h1>"));
+        assertTrue(response.body().contains("System health"));
     }
 
     @Test

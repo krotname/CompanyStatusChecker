@@ -34,6 +34,7 @@
         <maven-compiler.version>3.13.0</maven-compiler.version>
         <maven-surefire.version>3.5.2</maven-surefire.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <cyclonedx-maven-plugin.version>2.9.1</cyclonedx-maven-plugin.version>
         <test.includeTags></test.includeTags>
         <test.excludeTags></test.excludeTags>
     </properties>
@@ -155,6 +156,27 @@
                                     <mainClass>com.krotname.checker.Main</mainClass>
                                 </transformer>
                             </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <version>${cyclonedx-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>make-sbom</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>makeAggregateBom</goal>
+                        </goals>
+                        <configuration>
+                            <outputFormat>all</outputFormat>
+                            <outputName>bom</outputName>
+                            <schemaVersion>1.6</schemaVersion>
+                            <projectType>library</projectType>
                         </configuration>
                     </execution>
                 </executions>

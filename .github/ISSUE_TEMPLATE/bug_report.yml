@@ -1,0 +1,56 @@
+name: Bug report
+description: Report a reproducible defect in validation, API, UI, or runtime flow.
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for actionable, reproducible defects.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Describe the observable failure in one or two sentences.
+      placeholder: The API returns 500 for a malformed INN query...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: List the exact steps needed to reproduce the issue.
+      placeholder: |
+        1. Start the server with ...
+        2. Call /api/check?inn=...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Describe the expected result.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Paste the actual result, stack trace, or screenshots if relevant.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Java version, Maven version, and app launch mode.
+      placeholder: Windows 11, Java 21, Maven 3.9.11, java -jar ... --server 8080
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional context
+      description: Include payloads, logs, or edge-case details with secrets removed.

@@ -1,0 +1,37 @@
+name: Feature request
+description: Propose an improvement to the validation, API, UI, or project workflow.
+title: "[Feature] "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for concrete improvements with a clear user or maintenance benefit.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What limitation or missing capability should be addressed?
+      placeholder: The demo UI does not expose...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the implementation idea or behavior change.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe rejected options or tradeoffs if you have them.
+  - type: textarea
+    id: impact
+    attributes:
+      label: Expected impact
+      description: Explain how this change improves users, maintainability, or repo quality.
+    validations:
+      required: true

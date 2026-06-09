@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Upgraded the embedded UI from a minimal form to a dashboard-style operational demo.
+- Added CycloneDX SBOM generation and attached SBOM artifacts to CI/release flows.
+- Added GitHub issue forms for bug reports and feature requests.
+
 ## 1.1.0
 
 - Added public-facing quality surface:
