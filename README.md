@@ -1,7 +1,7 @@
 # Checker Corporate
 
-[![CI](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml?query=branch%3Amain)
-[![Mutation Testing](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml/badge.svg?branch=main)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml?query=branch%3Amain)
+[![CI Checker Corporate](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml?query=branch%3Amain+event%3Apush)
+[![CI Mutation Testing](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml/badge.svg?branch=main&event=push)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml?query=branch%3Amain+event%3Apush)
 [![CodeQL](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml?query=branch%3Amain)
 [![Scorecard](https://github.com/krotname/CompanyStatusChecker/actions/workflows/scorecard.yml/badge.svg?branch=main)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/scorecard.yml?query=branch%3Amain)
 [![Coverage Gate](https://img.shields.io/badge/coverage%20gate-JaCoCo%2080%25%2B-2ea44f)](docs/quality-gates.md)
