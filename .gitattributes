@@ -8,5 +8,6 @@
 *.svg text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
+Dockerfile text eol=lf
 mvnw text eol=lf
 mvnw.cmd text eol=crlf

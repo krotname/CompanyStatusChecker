@@ -125,6 +125,7 @@ docker compose up --build
 ### Качество и автоматизация
 
 - `CI` (`.github/workflows/ci.yml`) — `./mvnw verify`.
+- Docker image build + `/health` smoke test in CI.
 - `JaCoCo` с минимальным порогом покрытия `LINE >= 0.80`.
 - `Checkstyle` на этапе `verify`.
 - `CodeQL` и `OpenSSF Scorecard`.

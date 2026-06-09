@@ -12,6 +12,7 @@ This repository is optimized for quick external review: each quality claim is ti
 | Coverage | JaCoCo line coverage threshold `LINE >= 0.80` | `pom.xml` |
 | Style | Checkstyle runs during `verify` and includes test sources | `checkstyle.xml` + Maven plugin |
 | CI | GitHub Actions runs `./mvnw -B clean verify` on push and PR | `.github/workflows/ci.yml` |
+| Docker runtime | CI builds the image and checks `/health` from a running container | `.github/workflows/ci.yml` |
 | Security scanning | CodeQL Java workflow | `.github/workflows/codeql.yml` |
 | Supply chain | CycloneDX SBOM XML/JSON generated during package | `target/bom.xml`, `target/bom.json` |
 | Dependency risk | Dependency Review for PR dependency changes | `.github/workflows/dependency-review.yml` |
