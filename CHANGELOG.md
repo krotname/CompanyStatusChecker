@@ -21,6 +21,9 @@
 - Removed hardcoded JAR version from Docker and release automation.
 - Added GHCR Docker image publishing to the tag release workflow.
 - Made the release build start from a clean Maven target directory.
+- Added visible CI jobs for unit, integration, UI, and contract test categories.
+- Added PIT mutation testing workflow with an 80% mutation score gate.
+- Covered 12-digit INN checksum validation and encoded query parameter handling.
 
 ## 1.1.0
 

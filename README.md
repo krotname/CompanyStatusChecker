@@ -1,6 +1,7 @@
 # Checker Corporate
 
 [![CI](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml)
+[![Mutation Testing](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml)
 [![CodeQL](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml)
 [![Scorecard](https://api.scorecard.dev/projects/github.com/krotname/CompanyStatusChecker/badge)](https://securityscorecards.dev/viewer/?uri=github.com/krotname/CompanyStatusChecker)
 [![Coverage](https://codecov.io/gh/krotname/CompanyStatusChecker/branch/main/graph/badge.svg)](https://codecov.io/gh/krotname/CompanyStatusChecker)
@@ -120,13 +121,16 @@ docker compose up --build
 ./mvnw -q test -Pintegration-tests       # только интеграционные (включая ui)
 ./mvnw -q test -Pui-tests                # только UI/API smoke
 ./mvnw -q test -Pcontract-tests          # только contract
+./mvnw -q verify -Pmutation-tests        # mutation testing gate
 ```
 
 ### Качество и автоматизация
 
 - `CI` (`.github/workflows/ci.yml`) — `./mvnw verify`.
+- `CI` отдельно запускает `unit`, `integration`, `ui` и `contract` test jobs с публикацией Surefire reports.
 - Docker image build + `/health` smoke test in CI.
 - `JaCoCo` с минимальным порогом покрытия `LINE >= 0.80`.
+- `PIT` mutation testing с минимальным порогом `mutationThreshold >= 80`.
 - `Checkstyle` на этапе `verify`.
 - `CodeQL` и `OpenSSF Scorecard`.
 - `Dependabot`, `Release` workflow.
@@ -139,6 +143,7 @@ docker compose up --build
 ```bash
 ./mvnw -q test
 ./mvnw -q verify
+./mvnw -q verify -Pmutation-tests
 ```
 
 ---
@@ -213,7 +218,12 @@ Run by category:
 ./mvnw -q test -Pintegration-tests # integration only
 ./mvnw -q test -Pui-tests          # UI/API smoke only
 ./mvnw -q test -Pcontract-tests    # contract only
+./mvnw -q verify -Pmutation-tests  # mutation testing gate
 ```
+
+### CI gates
+
+The main CI workflow exposes separate `unit`, `integration`, `ui`, and `contract` jobs and uploads Surefire reports for each category. A dedicated Mutation Testing workflow runs PIT with `mutationThreshold >= 80` and publishes the PIT HTML/XML report as an artifact.
 
 ### License
 

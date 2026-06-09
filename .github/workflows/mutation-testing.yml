@@ -1,0 +1,48 @@
+name: Mutation Testing
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "pom.xml"
+      - "src/main/**"
+      - "src/test/**"
+      - ".github/workflows/mutation-testing.yml"
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "pom.xml"
+      - "src/main/**"
+      - "src/test/**"
+      - ".github/workflows/mutation-testing.yml"
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  pitest:
+    name: PIT mutation coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+      - name: Run mutation testing
+        run: ./mvnw -B clean verify -Pmutation-tests
+      - name: Upload PIT reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pitest-report
+          path: target/pit-reports
+          if-no-files-found: error

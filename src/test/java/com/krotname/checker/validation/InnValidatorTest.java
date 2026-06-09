@@ -13,6 +13,13 @@ class InnValidatorTest {
     void shouldAcceptKnownValidInns() {
         assertTrue(validator.isValid("9710083390"));
         assertTrue(validator.isValid("7604147344"));
+        assertTrue(validator.isValid("500100732259"));
+    }
+
+    @Test
+    void shouldRejectInvalidChecksums() {
+        assertFalse(validator.isValid("9710083391"));
+        assertFalse(validator.isValid("500100732258"));
     }
 
     @Test

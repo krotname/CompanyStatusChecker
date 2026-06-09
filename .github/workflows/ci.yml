@@ -13,7 +13,43 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  test-categories:
+    name: ${{ matrix.category }} tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - category: unit
+            profile: unit-tests
+          - category: integration
+            profile: integration-tests
+          - category: ui
+            profile: ui-tests
+          - category: contract
+            profile: contract-tests
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+      - name: Run ${{ matrix.category }} tests
+        run: ./mvnw -B clean test -P${{ matrix.profile }}
+      - name: Upload ${{ matrix.category }} test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-${{ matrix.category }}-tests
+          path: target/surefire-reports
+          if-no-files-found: ignore
+
   build:
+    name: full verification
     runs-on: ubuntu-latest
     strategy:
       matrix:

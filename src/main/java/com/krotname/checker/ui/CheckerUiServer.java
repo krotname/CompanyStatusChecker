@@ -104,13 +104,11 @@ public final class CheckerUiServer {
             return Map.of();
         }
         return java.util.Arrays.stream(rawQuery.split("&"))
-                .filter(entry -> entry.contains("="))
+                .map(entry -> entry.split("=", 2))
+                .filter(parts -> parts.length == 2 && !decode(parts[0]).isBlank())
                 .collect(Collectors.toMap(
-                        token -> token.split("=", 2)[0],
-                        token -> {
-                            String[] parts = token.split("=", 2);
-                            return decode(parts.length > 1 ? parts[1] : "");
-                        },
+                        parts -> decode(parts[0]),
+                        parts -> decode(parts[1]),
                         (existing, replacement) -> existing,
                         java.util.LinkedHashMap::new
                 ));

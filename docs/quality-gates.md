@@ -10,9 +10,12 @@ This repository is optimized for quick external review: each quality claim is ti
 | Contract tests | DaData parser and OpenAPI checks tagged with `@Tag("contract")` | `./mvnw -q test -Pcontract-tests` |
 | Full verification | Tests, package, SBOM, Checkstyle, JaCoCo gate | `./mvnw -q verify` |
 | Coverage | JaCoCo line coverage threshold `LINE >= 0.80` | `pom.xml` |
+| Mutation testing | PIT mutation score threshold `mutationThreshold >= 80` | `./mvnw -q verify -Pmutation-tests` |
 | Style | Checkstyle runs during `verify` and includes test sources | `checkstyle.xml` + Maven plugin |
-| CI | GitHub Actions runs `./mvnw -B clean verify` on push and PR | `.github/workflows/ci.yml` |
+| CI | GitHub Actions runs category test jobs plus full `./mvnw -B clean verify` on push and PR | `.github/workflows/ci.yml` |
+| Test reports | CI uploads Surefire reports for unit, integration, UI, and contract jobs | `.github/workflows/ci.yml` |
 | Docker runtime | CI builds the image and checks `/health` from a running container | `.github/workflows/ci.yml` |
+| Mutation reports | Dedicated workflow publishes PIT HTML/XML reports | `.github/workflows/mutation-testing.yml` |
 | Security scanning | CodeQL Java workflow | `.github/workflows/codeql.yml` |
 | Supply chain | CycloneDX SBOM XML/JSON generated during package | `target/bom.xml`, `target/bom.json` |
 | Dependency risk | Dependency Review for PR dependency changes | `.github/workflows/dependency-review.yml` |
@@ -25,6 +28,7 @@ Use this checklist before publishing larger changes:
 
 - `./mvnw -q test`
 - `./mvnw -q verify`
+- `./mvnw -q verify -Pmutation-tests`
 - README updated for user-facing behavior.
 - OpenAPI contract updated for API behavior changes.
 - No tokens, API keys, or local config files committed.
@@ -35,6 +39,7 @@ Use this checklist before publishing larger changes:
 The default branch should stay green on:
 
 - `CI`
+- `Mutation Testing`
 - `CodeQL`
 - `OpenSSF Scorecard`
 - `Dependency Review` for pull requests

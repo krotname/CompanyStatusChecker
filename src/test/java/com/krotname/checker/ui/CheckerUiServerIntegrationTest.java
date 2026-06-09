@@ -45,6 +45,7 @@ class CheckerUiServerIntegrationTest {
         HttpRequest request = HttpRequest.newBuilder(uri("/health")).GET().build();
         HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
+        assertEquals("application/json; charset=UTF-8", response.headers().firstValue("Content-Type").orElse(""));
         assertTrue(response.body().contains("\"status\":\"ok\""));
     }
 
@@ -62,6 +63,22 @@ class CheckerUiServerIntegrationTest {
         HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
         assertTrue(response.body().contains("\"inn\": \"first-dup\""), response.body());
+    }
+
+    @Test
+    void shouldDecodePercentEncodedQueryParameterName() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/api/check?%69nn=9710083390")).GET().build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode());
+        assertTrue(response.body().contains("\"inn\": \"9710083390\""), response.body());
+    }
+
+    @Test
+    void shouldIgnoreQueryTokensWithoutValueSeparator() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/api/check?ignored&inn=9710083390")).GET().build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode());
+        assertTrue(response.body().contains("\"inn\": \"9710083390\""), response.body());
     }
 
     @Test
@@ -94,8 +111,19 @@ class CheckerUiServerIntegrationTest {
         HttpRequest request = HttpRequest.newBuilder(uri("/")).GET().build();
         HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
+        assertEquals("text/html; charset=UTF-8", response.headers().firstValue("Content-Type").orElse(""));
         assertTrue(response.body().contains("<h1>Checker Corporate</h1>"));
         assertTrue(response.body().contains("System health"));
+    }
+
+    @Test
+    void shouldReturnMethodNotAllowedForIndexPage() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/"))
+                .method("POST", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(405, response.statusCode());
+        assertTrue(response.body().contains("Method Not Allowed"));
     }
 
     @Test
