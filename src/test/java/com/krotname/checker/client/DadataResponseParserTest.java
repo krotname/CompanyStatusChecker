@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("unit")
+@Tag("contract")
 class DadataResponseParserTest {
     private final DadataResponseParser parser = new DadataResponseParser();
 

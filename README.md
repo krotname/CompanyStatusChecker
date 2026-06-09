@@ -108,6 +108,7 @@ docker compose up --build
 - `@Tag("unit")` — изолированные и доменные проверки.
 - `@Tag("integration")` — интеграции с HTTP-клиентом и HTTP API.
 - `@Tag("ui")` — интеграционные проверки поведения пользовательского API.
+- `@Tag("contract")` — проверки внешнего JSON/OpenAPI контракта.
 
 Запуск выборочно по профилям:
 
@@ -115,6 +116,8 @@ docker compose up --build
 mvn -q test                           # все тесты
 mvn -q test -Punit-tests              # только unit
 mvn -q test -Pintegration-tests       # только интеграционные (включая ui)
+mvn -q test -Pui-tests                # только UI/API smoke
+mvn -q test -Pcontract-tests          # только contract
 ```
 
 ### Качество и автоматизация
@@ -193,6 +196,7 @@ Open `http://localhost:8080`.
 - `@Tag("unit")` — pure domain and validation tests.
 - `@Tag("integration")` — network client and API integration tests.
 - `@Tag("ui")` — API tests through the embedded HTTP server.
+- `@Tag("contract")` — external JSON/OpenAPI contract tests.
 
 Run by category:
 
@@ -200,6 +204,8 @@ Run by category:
 mvn -q test                     # all tests
 mvn -q test -Punit-tests        # unit only
 mvn -q test -Pintegration-tests # integration only
+mvn -q test -Pui-tests          # UI/API smoke only
+mvn -q test -Pcontract-tests    # contract only
 ```
 
 ### License

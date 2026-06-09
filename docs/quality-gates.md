@@ -6,7 +6,8 @@ This repository is optimized for quick external review: each quality claim is ti
 | --- | --- | --- |
 | Unit tests | Domain and validation checks tagged with `@Tag("unit")` | `mvn -q test -Punit-tests` |
 | Integration tests | HTTP client and embedded API server tests tagged with `@Tag("integration")` | `mvn -q test -Pintegration-tests` |
-| UI smoke | Embedded HTTP server route checks tagged with `@Tag("ui")` | `CheckerUiServerIntegrationTest` |
+| UI smoke | Embedded HTTP server route checks tagged with `@Tag("ui")` | `mvn -q test -Pui-tests` |
+| Contract tests | DaData parser and OpenAPI checks tagged with `@Tag("contract")` | `mvn -q test -Pcontract-tests` |
 | Full verification | Tests, package, SBOM, Checkstyle, JaCoCo gate | `mvn -q verify` |
 | Coverage | JaCoCo line coverage threshold `LINE >= 0.80` | `pom.xml` |
 | Style | Checkstyle runs during `verify` and includes test sources | `checkstyle.xml` + Maven plugin |

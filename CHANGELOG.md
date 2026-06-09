@@ -11,6 +11,8 @@
 - Updated Maven test/build plugins and JUnit to current Dependabot-recommended versions.
 - Added architecture and quality-gate documentation for faster external review.
 - Added README UI preview asset.
+- Added dedicated `ui-tests` and `contract-tests` Maven profiles.
+- Added OpenAPI contract coverage for the documented HTTP surface.
 
 ## 1.1.0
 

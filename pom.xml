@@ -239,5 +239,17 @@
                 <test.includeTags>integration</test.includeTags>
             </properties>
         </profile>
+        <profile>
+            <id>ui-tests</id>
+            <properties>
+                <test.includeTags>ui</test.includeTags>
+            </properties>
+        </profile>
+        <profile>
+            <id>contract-tests</id>
+            <properties>
+                <test.includeTags>contract</test.includeTags>
+            </properties>
+        </profile>
     </profiles>
 </project>
