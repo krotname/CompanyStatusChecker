@@ -1,9 +1,9 @@
 # Checker Corporate
 
-[![CI](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml)
-[![Mutation Testing](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml)
-[![CodeQL](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml)
-[![Scorecard](https://github.com/krotname/CompanyStatusChecker/actions/workflows/scorecard.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/scorecard.yml)
+[![CI](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml?query=branch%3Amain)
+[![Mutation Testing](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml/badge.svg?branch=main)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml?query=branch%3Amain)
+[![CodeQL](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml?query=branch%3Amain)
+[![Scorecard](https://github.com/krotname/CompanyStatusChecker/actions/workflows/scorecard.yml/badge.svg?branch=main)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/scorecard.yml?query=branch%3Amain)
 [![Coverage Gate](https://img.shields.io/badge/coverage%20gate-JaCoCo%2080%25%2B-2ea44f)](docs/quality-gates.md)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-21%20LTS-007396)](https://openjdk.org/projects/jdk/21/)

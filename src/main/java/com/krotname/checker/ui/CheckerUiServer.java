@@ -97,13 +97,24 @@ public final class CheckerUiServer {
     }
 
     private void handleLegacyFavicon(HttpExchange exchange) throws IOException {
-        if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+        String method = exchange.getRequestMethod();
+        if (!"GET".equalsIgnoreCase(method) && !"HEAD".equalsIgnoreCase(method)) {
             writeStatus(exchange, 405, "Method Not Allowed");
             return;
         }
+        byte[] payload = loadResourcePayload(FAVICON_RESOURCE);
+        if (payload == null) {
+            writeStatus(exchange, 404, "Not Found");
+            return;
+        }
         Headers headers = exchange.getResponseHeaders();
-        headers.add("Location", "/favicon.svg");
-        exchange.sendResponseHeaders(302, -1);
+        headers.add("Content-Type", "image/svg+xml; charset=UTF-8");
+        exchange.sendResponseHeaders(200, payload.length);
+        try (OutputStream out = exchange.getResponseBody()) {
+            if ("GET".equalsIgnoreCase(method)) {
+                out.write(payload);
+            }
+        }
     }
 
     private void handleHealth(HttpExchange exchange) throws IOException {
