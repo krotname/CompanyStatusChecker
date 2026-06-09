@@ -5,6 +5,9 @@
 - Upgraded the embedded UI from a minimal form to a dashboard-style operational demo.
 - Added CycloneDX SBOM generation and attached SBOM artifacts to CI/release flows.
 - Added GitHub issue forms for bug reports and feature requests.
+- Added Dependency Review workflow for pull-request dependency risk checks.
+- Updated GitHub Actions to current major versions where appropriate.
+- Added release artifact provenance and SBOM attestations.
 
 ## 1.1.0
 

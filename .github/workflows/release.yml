@@ -7,19 +7,33 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
+  artifact-metadata: write
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
       - name: Build
         run: mvn -B -DskipTests package
+      - name: Generate artifact provenance
+        uses: actions/attest@v4
+        with:
+          subject-path: target/checker-corporate-1.1.0.jar
+      - name: Generate SBOM attestation
+        uses: actions/attest@v4
+        with:
+          subject-path: target/checker-corporate-1.1.0.jar
+          sbom-path: target/bom.json
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
