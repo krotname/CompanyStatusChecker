@@ -1,0 +1,12 @@
+# Build artifacts and IDE noise
+/target/
+/.idea/
+/.vscode/
+*.iml
+*.class
+# Local config examples
+!src/main/resources/checker.example.properties
+src/main/resources/checker.properties
+*.log
+.DS_Store
+.idea
