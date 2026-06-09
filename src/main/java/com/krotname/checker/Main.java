@@ -7,6 +7,13 @@ import java.io.IOException;
 public final class Main {
     private static final int DEFAULT_SERVER_PORT = 8080;
 
+    /**
+     * Supports three startup modes:
+     * - no args: print usage/help;
+     * - --help: print usage/help;
+     * - --server [port]: start embedded HTTP UI;
+     * - otherwise: treat the first arg as INN and print a single check result.
+     */
     public static void main(String[] args) {
         if (args.length == 0 || "--help".equalsIgnoreCase(args[0])) {
             printHelp();

@@ -1,10 +1,12 @@
 package com.krotname.checker.model;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("unit")
 class CheckResultTest {
     @Test
     void shouldBuildValidFactoryResults() {
@@ -23,4 +25,3 @@ class CheckResultTest {
         assertTrue(unavailable.message().contains("err"));
     }
 }
-

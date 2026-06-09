@@ -64,6 +64,7 @@ java -jar target/checker-corporate-1.1.0.jar --server 8080
 
 - `GET /health` — health-check для автоматизации.
 - `GET /api/check?inn=<ИНН>` — статус компании.
+Оба endpoint соответствуют `docs/openapi.yaml`.
 
 Пример ответа:
 
@@ -76,12 +77,35 @@ java -jar target/checker-corporate-1.1.0.jar --server 8080
 }
 ```
 
+### Docker
+
+```bash
+mvn -q -DskipTests package
+docker compose up --build
+```
+
+Откройте `http://localhost:8080`.
+
 ### Тестовая стратегия
 
 - **Unit**: валидация ИНН, маппинг статусов DaData, конфигурация, доменные фабрики.
 - **Интеграционные**: HTTP-клиент DaData с локальным тестовым сервером + маршруты API.
 - **UI**: smoke-проверки `/`, `/api/check`, `/health`, включая ошибки валидации.
 - **Contract/через интеграционный слой**: формат `DadataResponseParser` и поведение `CheckerCorporate.check`.
+
+Классификация тестов:
+
+- `@Tag("unit")` — изолированные и доменные проверки.
+- `@Tag("integration")` — интеграции с HTTP-клиентом и HTTP API.
+- `@Tag("ui")` — интеграционные проверки поведения пользовательского API.
+
+Запуск выборочно по профилям:
+
+```bash
+mvn -q test                           # все тесты
+mvn -q test -Punit-tests              # только unit
+mvn -q test -Pintegration-tests       # только интеграционные (включая ui)
+```
 
 ### Качество и автоматизация
 
@@ -126,6 +150,7 @@ java -jar target/checker-corporate-1.1.0.jar 9710083390
 
 - `GET /health` — automation endpoint.
 - `GET /api/check?inn=<INN>` — company status in JSON.
+This API is described in `docs/openapi.yaml`.
 
 ### Quality and reviewability
 
@@ -133,6 +158,29 @@ java -jar target/checker-corporate-1.1.0.jar 9710083390
 - Multiple test categories (unit/integration/ui/contract).
 - Security and release automation in GitHub Actions.
 - Clear runtime setup: environment variable or properties resource.
+
+### Docker
+
+```bash
+mvn -q -DskipTests package
+docker compose up --build
+```
+
+Open `http://localhost:8080`.
+
+### Tests by layer
+
+- `@Tag("unit")` — pure domain and validation tests.
+- `@Tag("integration")` — network client and API integration tests.
+- `@Tag("ui")` — API tests through the embedded HTTP server.
+
+Run by category:
+
+```bash
+mvn -q test                     # all tests
+mvn -q test -Punit-tests        # unit only
+mvn -q test -Pintegration-tests # integration only
+```
 
 ### License
 

@@ -4,6 +4,7 @@ import com.krotname.checker.client.DadataClient;
 import com.krotname.checker.model.CheckResult;
 import com.krotname.checker.model.CompanyStatus;
 import com.krotname.checker.validation.InnValidator;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Tag("unit")
 class CheckerCorporateTest {
     @Test
     void shouldReturnActiveWhenApiReportsActive() throws IOException, InterruptedException {

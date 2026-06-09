@@ -1,12 +1,14 @@
 package com.krotname.checker.client;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("unit")
 class DadataResponseParserTest {
     private final DadataResponseParser parser = new DadataResponseParser();
 

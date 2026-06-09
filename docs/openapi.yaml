@@ -1,0 +1,65 @@
+openapi: 3.1.0
+info:
+  title: Checker Corporate API
+  version: 1.1.0
+  description: |
+    API for INN validation and DaData-backed legal entity status checks.
+servers:
+  - url: http://localhost:8080
+paths:
+  /health:
+    get:
+      summary: Health check
+      description: |
+        Lightweight liveness probe for CI and deployment tooling.
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+  /api/check:
+    get:
+      summary: Check company status by INN
+      description: |
+        Validates INN format and returns mapped status or structured validation error.
+      parameters:
+        - name: inn
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Validation result returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  inn:
+                    type: string
+                  status:
+                    type: string
+                  dadataStatus:
+                    type: string
+                    nullable: true
+                  message:
+                    type: string
+        "400":
+          description: Missing INN parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: missing_inn
+        "405":
+          description: HTTP method not supported for this endpoint

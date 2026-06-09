@@ -1,0 +1,5 @@
+.git
+target/*
+!target/checker-corporate-1.1.0.jar
+README.md
+outputs

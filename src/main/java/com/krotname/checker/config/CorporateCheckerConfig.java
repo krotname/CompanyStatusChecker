@@ -26,6 +26,12 @@ public final class CorporateCheckerConfig {
         this.timeout = timeout;
     }
 
+    /**
+     * Loads runtime configuration with explicit runtime overrides first and a
+     * resource fallback only as a second option.
+     * The method always fails fast when a token is unavailable because token is mandatory
+     * for any DaData call.
+     */
     public static CorporateCheckerConfig fromEnvironmentOrResource() {
         // Resolve from explicit runtime settings first; fallback to resource only when explicitly absent.
         String token = resolveConfigValue("DADATA_TOKEN");
@@ -43,6 +49,10 @@ public final class CorporateCheckerConfig {
         return new CorporateCheckerConfig(token.trim(), endpoint.trim(), timeout);
     }
 
+    /**
+     * Resolves value from system property, then environment variable.
+     * This keeps local test overrides explicit and deployment overrides isolated.
+     */
     private static String resolveConfigValue(String key) {
         return resolveConfigValue(key, null);
     }
@@ -68,10 +78,16 @@ public final class CorporateCheckerConfig {
         return timeout;
     }
 
+    /**
+     * Checks resource availability before attempting classpath fallback loading.
+     */
     private static boolean shouldLoadFromResource() {
         return CorporateCheckerConfig.class.getClassLoader().getResource(DEFAULT_RESOURCE) != null;
     }
 
+    /**
+     * Reads checker.properties from classpath when present.
+     */
     private static String loadFromResource() {
         try (InputStream stream = CorporateCheckerConfig.class.getClassLoader().getResourceAsStream(DEFAULT_RESOURCE)) {
             if (stream == null) {
@@ -89,6 +105,9 @@ public final class CorporateCheckerConfig {
         }
     }
 
+    /**
+     * Explicit token constructor for tests and custom bootstrap paths.
+     */
     public static CorporateCheckerConfig fromToken(String token) {
         Objects.requireNonNull(token, "token");
         return new CorporateCheckerConfig(token, DEFAULT_ENDPOINT, DEFAULT_TIMEOUT);

@@ -1,0 +1,8 @@
+services:
+  checker-corporate:
+    build: .
+    command: ["--server", "8080"]
+    environment:
+      DADATA_TOKEN: ${DADATA_TOKEN}
+    ports:
+      - "8080:8080"

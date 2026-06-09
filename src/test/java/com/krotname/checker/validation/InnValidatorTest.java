@@ -1,9 +1,11 @@
 package com.krotname.checker.validation;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("unit")
 class InnValidatorTest {
     private final InnValidator validator = new InnValidator();
 

@@ -1,12 +1,14 @@
 package com.krotname.checker;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("unit")
 class MainTest {
     @Test
     void shouldPrintHelpWithoutArguments() {

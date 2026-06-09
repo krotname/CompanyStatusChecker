@@ -6,6 +6,7 @@ import com.krotname.checker.validation.InnValidator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,6 +18,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("integration")
+@Tag("ui")
 class CheckerUiServerIntegrationTest {
     private CheckerUiServer server;
     private final HttpClient http = HttpClient.newHttpClient();
@@ -76,6 +79,14 @@ class CheckerUiServerIntegrationTest {
         HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
         assertTrue(response.body().contains("\"inn\": \"9710 0883390\""), response.body());
+    }
+
+    @Test
+    void shouldKeepRequestProcessingForMalformedPercentEncoding() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/api/check?inn=%25ZZ")).GET().build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode());
+        assertTrue(response.body().contains("\"status\": \"ACTIVE\""), response.body());
     }
 
     @Test
