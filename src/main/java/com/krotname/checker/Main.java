@@ -53,7 +53,8 @@ public final class Main {
             Thread.currentThread().interrupt();
             System.out.println("Server thread interrupted.");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            String message = e.getMessage() == null ? "unknown IO error" : e.getMessage();
+            System.out.printf("Failed to start server: %s%n", message);
         }
     }
 

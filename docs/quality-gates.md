@@ -12,9 +12,11 @@ This repository is optimized for quick external review: each quality claim is ti
 | Coverage | JaCoCo line coverage threshold `LINE >= 0.80` | `pom.xml` |
 | Mutation testing | PIT mutation score threshold `mutationThreshold >= 80` | `./mvnw -q verify -Pmutation-tests` |
 | Style | Checkstyle runs during `verify` and includes test sources | `checkstyle.xml` + Maven plugin |
+| Static bug analysis | SpotBugs runs during `verify` with `effort=Max`, `threshold=Low`, and fail-on-error enabled | `pom.xml` |
 | CI | GitHub Actions runs category test jobs plus full `./mvnw -B clean verify` on push and PR | `.github/workflows/ci.yml` |
 | Test reports | CI uploads Surefire reports for unit, integration, UI, and contract jobs | `.github/workflows/ci.yml` |
 | Docker runtime | CI builds the image and checks `/health` from a running container | `.github/workflows/ci.yml` |
+| Static analysis reports | CI uploads the SpotBugs XML report | `target/spotbugsXml.xml` |
 | Mutation reports | Dedicated workflow publishes PIT HTML/XML reports | `.github/workflows/mutation-testing.yml` |
 | Security scanning | CodeQL Java workflow | `.github/workflows/codeql.yml` |
 | Supply chain | CycloneDX SBOM XML/JSON generated during package | `target/bom.xml`, `target/bom.json` |
@@ -40,6 +42,7 @@ The default branch should stay green on:
 
 - `CI`
 - `Mutation Testing`
+- `SpotBugs` through the default CI verification job
 - `CodeQL`
 - `OpenSSF Scorecard`
 - `Dependency Review` for pull requests

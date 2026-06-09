@@ -47,8 +47,8 @@ public final class CheckerUiServer {
     }
 
     public int getPort() {
-        Objects.requireNonNull(server, "server");
-        return server.getAddress().getPort();
+        HttpServer currentServer = Objects.requireNonNull(server, "server");
+        return currentServer.getAddress().getPort();
     }
 
     public void stop() {

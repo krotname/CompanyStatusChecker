@@ -90,6 +90,12 @@ jobs:
           path: |
             target/bom.xml
             target/bom.json
+      - name: Upload SpotBugs report
+        uses: actions/upload-artifact@v4
+        with:
+          name: spotbugs-report
+          path: target/spotbugsXml.xml
+          if-no-files-found: error
       - name: Upload JaCoCo coverage
         uses: codecov/codecov-action@v7
         with:

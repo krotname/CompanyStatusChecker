@@ -24,6 +24,8 @@
 - Added visible CI jobs for unit, integration, UI, and contract test categories.
 - Added PIT mutation testing workflow with an 80% mutation score gate.
 - Covered 12-digit INN checksum validation and encoded query parameter handling.
+- Added SpotBugs static bug-pattern analysis to the default Maven verification gate.
+- Uploaded SpotBugs XML reports from CI.
 
 ## 1.1.0
 

@@ -131,6 +131,7 @@ docker compose up --build
 - Docker image build + `/health` smoke test in CI.
 - `JaCoCo` с минимальным порогом покрытия `LINE >= 0.80`.
 - `PIT` mutation testing с минимальным порогом `mutationThreshold >= 80`.
+- `SpotBugs` bug-pattern analysis с `effort=Max`, `threshold=Low` и fail-on-warning режимом.
 - `Checkstyle` на этапе `verify`.
 - `CodeQL` и `OpenSSF Scorecard`.
 - `Dependabot`, `Release` workflow.
@@ -186,6 +187,7 @@ This API is described in `docs/openapi.yaml`.
 
 - Structured package layout with small, focused classes.
 - Multiple test categories (unit/integration/ui/contract).
+- Static bug-pattern analysis with SpotBugs in the default `verify` gate.
 - Security and release automation in GitHub Actions.
 - Clear runtime setup: environment variable or properties resource.
 - CycloneDX SBOM generation for dependency transparency.
