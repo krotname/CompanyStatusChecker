@@ -33,7 +33,7 @@
 
 ### Запуск
 
-1. Установить Java 21 и Maven 3.9+.
+1. Установить Java 21.
 2. Подготовить токен:
 
 ```bash
@@ -48,17 +48,19 @@ set DADATA_TOKEN=your_token   # Windows
 export DADATA_TOKEN=your_token # macOS/Linux
 ```
 
+На Windows используйте `mvnw.cmd` вместо `./mvnw`.
+
 #### CLI
 
 ```bash
-mvn -q -DskipTests package
+./mvnw -q -DskipTests package
 java -jar target/checker-corporate-1.1.0.jar 9710083390
 ```
 
 #### Веб UI
 
 ```bash
-mvn -q -DskipTests package
+./mvnw -q -DskipTests package
 java -jar target/checker-corporate-1.1.0.jar --server 8080
 ```
 
@@ -84,7 +86,7 @@ java -jar target/checker-corporate-1.1.0.jar --server 8080
 ### Docker
 
 ```bash
-mvn -q -DskipTests package
+./mvnw -q -DskipTests package
 docker compose up --build
 ```
 
@@ -113,16 +115,16 @@ docker compose up --build
 Запуск выборочно по профилям:
 
 ```bash
-mvn -q test                           # все тесты
-mvn -q test -Punit-tests              # только unit
-mvn -q test -Pintegration-tests       # только интеграционные (включая ui)
-mvn -q test -Pui-tests                # только UI/API smoke
-mvn -q test -Pcontract-tests          # только contract
+./mvnw -q test                           # все тесты
+./mvnw -q test -Punit-tests              # только unit
+./mvnw -q test -Pintegration-tests       # только интеграционные (включая ui)
+./mvnw -q test -Pui-tests                # только UI/API smoke
+./mvnw -q test -Pcontract-tests          # только contract
 ```
 
 ### Качество и автоматизация
 
-- `CI` (`.github/workflows/ci.yml`) — `mvn verify`.
+- `CI` (`.github/workflows/ci.yml`) — `./mvnw verify`.
 - `JaCoCo` с минимальным порогом покрытия `LINE >= 0.80`.
 - `Checkstyle` на этапе `verify`.
 - `CodeQL` и `OpenSSF Scorecard`.
@@ -133,8 +135,8 @@ mvn -q test -Pcontract-tests          # только contract
 - Community health files: `SECURITY.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, issue/PR templates.
 
 ```bash
-mvn -q test
-mvn -q verify
+./mvnw -q test
+./mvnw -q verify
 ```
 
 ---
@@ -161,9 +163,11 @@ Review documents: [architecture](docs/architecture.md), [quality gates](docs/qua
 cp src/main/resources/checker.example.properties src/main/resources/checker.properties
 # token=<YOUR_DADATA_TOKEN>
 
-mvn -q -DskipTests package
+./mvnw -q -DskipTests package
 java -jar target/checker-corporate-1.1.0.jar 9710083390
 ```
+
+On Windows, use `mvnw.cmd` instead of `./mvnw`.
 
 ### API
 
@@ -185,7 +189,7 @@ This API is described in `docs/openapi.yaml`.
 ### Docker
 
 ```bash
-mvn -q -DskipTests package
+./mvnw -q -DskipTests package
 docker compose up --build
 ```
 
@@ -201,11 +205,11 @@ Open `http://localhost:8080`.
 Run by category:
 
 ```bash
-mvn -q test                     # all tests
-mvn -q test -Punit-tests        # unit only
-mvn -q test -Pintegration-tests # integration only
-mvn -q test -Pui-tests          # UI/API smoke only
-mvn -q test -Pcontract-tests    # contract only
+./mvnw -q test                     # all tests
+./mvnw -q test -Punit-tests        # unit only
+./mvnw -q test -Pintegration-tests # integration only
+./mvnw -q test -Pui-tests          # UI/API smoke only
+./mvnw -q test -Pcontract-tests    # contract only
 ```
 
 ### License

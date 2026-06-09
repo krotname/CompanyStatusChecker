@@ -14,6 +14,8 @@
 - Added dedicated `ui-tests` and `contract-tests` Maven profiles.
 - Added OpenAPI contract coverage for the documented HTTP surface.
 - Updated repository links to the canonical `CompanyStatusChecker` GitHub location.
+- Added Maven Wrapper 3.3.4 pinned to Maven 3.9.16 with distribution checksum verification.
+- Switched CI, release, and documentation commands to the project-local Maven Wrapper.
 
 ## 1.1.0
 

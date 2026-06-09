@@ -4,14 +4,14 @@ This repository is optimized for quick external review: each quality claim is ti
 
 | Area | Evidence | Command or location |
 | --- | --- | --- |
-| Unit tests | Domain and validation checks tagged with `@Tag("unit")` | `mvn -q test -Punit-tests` |
-| Integration tests | HTTP client and embedded API server tests tagged with `@Tag("integration")` | `mvn -q test -Pintegration-tests` |
-| UI smoke | Embedded HTTP server route checks tagged with `@Tag("ui")` | `mvn -q test -Pui-tests` |
-| Contract tests | DaData parser and OpenAPI checks tagged with `@Tag("contract")` | `mvn -q test -Pcontract-tests` |
-| Full verification | Tests, package, SBOM, Checkstyle, JaCoCo gate | `mvn -q verify` |
+| Unit tests | Domain and validation checks tagged with `@Tag("unit")` | `./mvnw -q test -Punit-tests` |
+| Integration tests | HTTP client and embedded API server tests tagged with `@Tag("integration")` | `./mvnw -q test -Pintegration-tests` |
+| UI smoke | Embedded HTTP server route checks tagged with `@Tag("ui")` | `./mvnw -q test -Pui-tests` |
+| Contract tests | DaData parser and OpenAPI checks tagged with `@Tag("contract")` | `./mvnw -q test -Pcontract-tests` |
+| Full verification | Tests, package, SBOM, Checkstyle, JaCoCo gate | `./mvnw -q verify` |
 | Coverage | JaCoCo line coverage threshold `LINE >= 0.80` | `pom.xml` |
 | Style | Checkstyle runs during `verify` and includes test sources | `checkstyle.xml` + Maven plugin |
-| CI | GitHub Actions runs `mvn -B clean verify` on push and PR | `.github/workflows/ci.yml` |
+| CI | GitHub Actions runs `./mvnw -B clean verify` on push and PR | `.github/workflows/ci.yml` |
 | Security scanning | CodeQL Java workflow | `.github/workflows/codeql.yml` |
 | Supply chain | CycloneDX SBOM XML/JSON generated during package | `target/bom.xml`, `target/bom.json` |
 | Dependency risk | Dependency Review for PR dependency changes | `.github/workflows/dependency-review.yml` |
@@ -22,8 +22,8 @@ This repository is optimized for quick external review: each quality claim is ti
 
 Use this checklist before publishing larger changes:
 
-- `mvn -q test`
-- `mvn -q verify`
+- `./mvnw -q test`
+- `./mvnw -q verify`
 - README updated for user-facing behavior.
 - OpenAPI contract updated for API behavior changes.
 - No tokens, API keys, or local config files committed.

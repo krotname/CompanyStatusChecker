@@ -24,7 +24,7 @@ jobs:
           distribution: temurin
           java-version: 21
       - name: Build
-        run: mvn -B -DskipTests package
+        run: ./mvnw -B -DskipTests package
       - name: Generate artifact provenance
         uses: actions/attest@v4
         with:
