@@ -43,9 +43,58 @@ class CheckerCorporateTest {
         assertEquals("Организация не активна.", result.message());
     }
 
+    @Test
+    void shouldReturnNotFoundWhenApiDoesNotProvideState() {
+        CheckerCorporate checker = new CheckerCorporate(
+                new AlwaysValidInnValidator(),
+                inn -> Optional.empty()
+        );
+
+        CheckResult result = checker.check("not-an-inn");
+
+        assertEquals(CompanyStatus.NOT_FOUND, result.status());
+        assertEquals("Организация не найдена.", result.message());
+    }
+
+    @Test
+    void shouldReturnServiceUnavailableWhenApiThrowsIOExceptionWithoutMessage() {
+        CheckerCorporate checker = new CheckerCorporate(
+                new AlwaysValidInnValidator(),
+                inn -> {
+                    throw new IOException();
+                }
+        );
+
+        CheckResult result = checker.check("not-an-inn");
+
+        assertEquals(CompanyStatus.SERVICE_UNAVAILABLE, result.status());
+        assertTrue(result.message().contains("io error"));
+    }
+
+    @Test
+    void shouldReturnServiceUnavailableAndRestoreInterruptFlag() {
+        CheckerCorporate checker = new CheckerCorporate(
+                new AlwaysValidInnValidator(),
+                inn -> {
+                    throw new InterruptedException("stop");
+                }
+        );
+
+        try {
+            CheckResult result = checker.check("not-an-inn");
+
+            assertEquals(CompanyStatus.SERVICE_UNAVAILABLE, result.status());
+            assertTrue(result.message().contains("interrupted"));
+            assertTrue(Thread.currentThread().isInterrupted());
+        } finally {
+            Thread.interrupted();
+        }
+    }
+
     @ParameterizedTest
     @CsvSource({
             "'ACTIVE',        true",
+            "' active ',      true",
             "'LIQUIDATED',    false",
             "'BANKRUPT',      false"
     })

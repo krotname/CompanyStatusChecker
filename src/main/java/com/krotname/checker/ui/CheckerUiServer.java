@@ -109,11 +109,14 @@ public final class CheckerUiServer {
         }
         Headers headers = exchange.getResponseHeaders();
         headers.add("Content-Type", "image/svg+xml; charset=UTF-8");
+        if ("HEAD".equalsIgnoreCase(method)) {
+            exchange.sendResponseHeaders(200, -1);
+            exchange.close();
+            return;
+        }
         exchange.sendResponseHeaders(200, payload.length);
         try (OutputStream out = exchange.getResponseBody()) {
-            if ("GET".equalsIgnoreCase(method)) {
-                out.write(payload);
-            }
+            out.write(payload);
         }
     }
 

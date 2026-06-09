@@ -117,8 +117,48 @@ class CheckerUiServerIntegrationTest {
     }
 
     @Test
+    void shouldServeSvgFavicon() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/favicon.svg")).GET().build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode());
+        assertEquals("image/svg+xml; charset=UTF-8", response.headers().firstValue("Content-Type").orElse(""));
+        assertTrue(response.body().contains("<svg"));
+    }
+
+    @Test
+    void shouldServeLegacyFaviconForHeadWithoutBody() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/favicon.ico"))
+                .method("HEAD", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode());
+        assertEquals("image/svg+xml; charset=UTF-8", response.headers().firstValue("Content-Type").orElse(""));
+        assertTrue(response.body().isEmpty());
+    }
+
+    @Test
     void shouldReturnMethodNotAllowedForIndexPage() throws Exception {
         HttpRequest request = HttpRequest.newBuilder(uri("/"))
+                .method("POST", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(405, response.statusCode());
+        assertTrue(response.body().contains("Method Not Allowed"));
+    }
+
+    @Test
+    void shouldReturnMethodNotAllowedForFaviconSvg() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/favicon.svg"))
+                .method("POST", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(405, response.statusCode());
+        assertTrue(response.body().contains("Method Not Allowed"));
+    }
+
+    @Test
+    void shouldReturnMethodNotAllowedForLegacyFavicon() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/favicon.ico"))
                 .method("POST", HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
