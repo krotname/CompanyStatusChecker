@@ -8,6 +8,7 @@
 - Added Dependency Review workflow for pull-request dependency risk checks.
 - Updated GitHub Actions to current major versions where appropriate.
 - Added release artifact provenance and SBOM attestations.
+- Updated Maven test/build plugins and JUnit to current Dependabot-recommended versions.
 
 ## 1.1.0
 
