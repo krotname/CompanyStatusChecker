@@ -9,7 +9,6 @@
 [![License](https://img.shields.io/github/license/krotname/CompanyStatusChecker)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-21%20LTS-007396)](https://openjdk.org/projects/jdk/21/)
 
-![Checker Corporate UI preview](docs/assets/ui-preview.svg)
 
 ## RU
 
