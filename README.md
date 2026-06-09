@@ -3,10 +3,9 @@
 [![CI](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml)
 [![Mutation Testing](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml)
 [![CodeQL](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml)
-[![Scorecard](https://api.scorecard.dev/projects/github.com/krotname/CompanyStatusChecker/badge)](https://securityscorecards.dev/viewer/?uri=github.com/krotname/CompanyStatusChecker)
-[![Coverage](https://codecov.io/gh/krotname/CompanyStatusChecker/branch/main/graph/badge.svg)](https://codecov.io/gh/krotname/CompanyStatusChecker)
-[![Release](https://img.shields.io/github/v/release/krotname/CompanyStatusChecker)](https://github.com/krotname/CompanyStatusChecker/releases)
-[![License](https://img.shields.io/github/license/krotname/CompanyStatusChecker)](LICENSE)
+[![Scorecard](https://github.com/krotname/CompanyStatusChecker/actions/workflows/scorecard.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/scorecard.yml)
+[![Coverage Gate](https://img.shields.io/badge/coverage%20gate-JaCoCo%2080%25%2B-2ea44f)](docs/quality-gates.md)
+[![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-21%20LTS-007396)](https://openjdk.org/projects/jdk/21/)
 
 

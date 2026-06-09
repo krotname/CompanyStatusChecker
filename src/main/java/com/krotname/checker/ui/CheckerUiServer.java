@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 public final class CheckerUiServer {
     private static final String INDEX_RESOURCE = "static/index.html";
+    private static final String FAVICON_RESOURCE = "static/favicon.svg";
     private final CheckerCorporate checker;
     private final int requestedPort;
     private final Gson gson;
@@ -41,6 +42,8 @@ public final class CheckerUiServer {
         server.createContext("/", this::handleIndex);
         server.createContext("/api/check", this::handleCheck);
         server.createContext("/health", this::handleHealth);
+        server.createContext("/favicon.svg", this::handleFavicon);
+        server.createContext("/favicon.ico", this::handleLegacyFavicon);
         server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
         server.start();
         return getPort();
@@ -62,13 +65,45 @@ public final class CheckerUiServer {
             writeStatus(exchange, 405, "Method Not Allowed");
             return;
         }
-        byte[] payload = loadIndexPage();
+        byte[] payload = loadResourcePayload(INDEX_RESOURCE);
+        if (payload == null) {
+            writeStatus(exchange, 500, "Index resource missing");
+            return;
+        }
         Headers headers = exchange.getResponseHeaders();
         headers.add("Content-Type", "text/html; charset=UTF-8");
         exchange.sendResponseHeaders(200, payload.length);
         try (OutputStream out = exchange.getResponseBody()) {
             out.write(payload);
         }
+    }
+
+    private void handleFavicon(HttpExchange exchange) throws IOException {
+        if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+            writeStatus(exchange, 405, "Method Not Allowed");
+            return;
+        }
+        byte[] payload = loadResourcePayload(FAVICON_RESOURCE);
+        if (payload == null) {
+            writeStatus(exchange, 404, "Not Found");
+            return;
+        }
+        Headers headers = exchange.getResponseHeaders();
+        headers.add("Content-Type", "image/svg+xml; charset=UTF-8");
+        exchange.sendResponseHeaders(200, payload.length);
+        try (OutputStream out = exchange.getResponseBody()) {
+            out.write(payload);
+        }
+    }
+
+    private void handleLegacyFavicon(HttpExchange exchange) throws IOException {
+        if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+            writeStatus(exchange, 405, "Method Not Allowed");
+            return;
+        }
+        Headers headers = exchange.getResponseHeaders();
+        headers.add("Location", "/favicon.svg");
+        exchange.sendResponseHeaders(302, -1);
     }
 
     private void handleHealth(HttpExchange exchange) throws IOException {
@@ -128,11 +163,11 @@ public final class CheckerUiServer {
         }
     }
 
-    private byte[] loadIndexPage() throws IOException {
-        // Keep the endpoint resilient: fallback page prevents hard 500 if static resource is removed.
-        try (InputStream in = CheckerUiServer.class.getClassLoader().getResourceAsStream(INDEX_RESOURCE)) {
+    private byte[] loadResourcePayload(String resource) throws IOException {
+        // Keep endpoints resilient when static resources are temporarily unavailable.
+        try (InputStream in = CheckerUiServer.class.getClassLoader().getResourceAsStream(resource)) {
             if (in == null) {
-                return "<h1>Checker UI is unavailable</h1>".getBytes(StandardCharsets.UTF_8);
+                return null;
             }
             return in.readAllBytes();
         }
