@@ -1,11 +1,11 @@
 # Checker Corporate
 
-[![CI](https://github.com/krotname/Checker-corporate/actions/workflows/ci.yml/badge.svg)](https://github.com/krotname/Checker-corporate/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/krotname/Checker-corporate/actions/workflows/codeql.yml/badge.svg)](https://github.com/krotname/Checker-corporate/actions/workflows/codeql.yml)
-[![Scorecard](https://api.scorecard.dev/projects/github.com/krotname/Checker-corporate/badge)](https://securityscorecards.dev/viewer/?uri=github.com/krotname/Checker-corporate)
-[![Coverage](https://codecov.io/gh/krotname/Checker-corporate/branch/main/graph/badge.svg)](https://codecov.io/gh/krotname/Checker-corporate)
-[![Release](https://img.shields.io/github/v/release/krotname/Checker-corporate)](https://github.com/krotname/Checker-corporate/releases)
-[![License](https://img.shields.io/github/license/krotname/Checker-corporate)](LICENSE)
+[![CI](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml/badge.svg)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml)
+[![Scorecard](https://api.scorecard.dev/projects/github.com/krotname/CompanyStatusChecker/badge)](https://securityscorecards.dev/viewer/?uri=github.com/krotname/CompanyStatusChecker)
+[![Coverage](https://codecov.io/gh/krotname/CompanyStatusChecker/branch/main/graph/badge.svg)](https://codecov.io/gh/krotname/CompanyStatusChecker)
+[![Release](https://img.shields.io/github/v/release/krotname/CompanyStatusChecker)](https://github.com/krotname/CompanyStatusChecker/releases)
+[![License](https://img.shields.io/github/license/krotname/CompanyStatusChecker)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-21%20LTS-007396)](https://openjdk.org/projects/jdk/21/)
 
 ![Checker Corporate UI preview](docs/assets/ui-preview.svg)

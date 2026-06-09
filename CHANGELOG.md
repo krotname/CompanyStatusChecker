@@ -13,6 +13,7 @@
 - Added README UI preview asset.
 - Added dedicated `ui-tests` and `contract-tests` Maven profiles.
 - Added OpenAPI contract coverage for the documented HTTP surface.
+- Updated repository links to the canonical `CompanyStatusChecker` GitHub location.
 
 ## 1.1.0
 
