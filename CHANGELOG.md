@@ -9,6 +9,8 @@
 - Updated GitHub Actions to current major versions where appropriate.
 - Added release artifact provenance and SBOM attestations.
 - Updated Maven test/build plugins and JUnit to current Dependabot-recommended versions.
+- Added architecture and quality-gate documentation for faster external review.
+- Added README UI preview asset.
 
 ## 1.1.0
 

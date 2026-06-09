@@ -8,6 +8,8 @@
 [![License](https://img.shields.io/github/license/krotname/Checker-corporate)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-21%20LTS-007396)](https://openjdk.org/projects/jdk/21/)
 
+![Checker Corporate UI preview](docs/assets/ui-preview.svg)
+
 ## RU
 
 ### Что это
@@ -26,6 +28,8 @@
 - `com.krotname.checker.config` — безопасная загрузка конфигурации.
 - `com.krotname.checker.ui` — HTTP-сервер (`/`, `/health`, `/api/check`).
 - `src/main/resources/static/index.html` — dashboard-style UI для ручной проверки и визуального демо.
+
+Подробные материалы для ревью: [architecture](docs/architecture.md), [quality gates](docs/quality-gates.md), [OpenAPI](docs/openapi.yaml).
 
 ### Запуск
 
@@ -145,6 +149,8 @@ It is designed to demonstrate clean layering, testability, and CI quality postur
 - `config` — runtime configuration loading.
 - `ui` — tiny HTTP server for `/`, `/health`, `/api/check`.
 - `static/index.html` — dashboard-style browser UI.
+
+Review documents: [architecture](docs/architecture.md), [quality gates](docs/quality-gates.md), [OpenAPI](docs/openapi.yaml).
 
 ### Run
 

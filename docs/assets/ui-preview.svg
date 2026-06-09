@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Checker Corporate UI preview</title>
+  <desc id="desc">Dashboard-style preview of the Checker Corporate browser UI.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf8f2"/>
+      <stop offset="0.58" stop-color="#eef2f6"/>
+      <stop offset="1" stop-color="#e6f0ef"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#115e59"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#1a202c" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <circle cx="150" cy="80" r="180" fill="#0f766e" opacity="0.12"/>
+  <circle cx="1050" cy="70" r="160" fill="#b45309" opacity="0.10"/>
+  <rect x="88" y="70" width="1024" height="580" rx="24" fill="#ffffff" opacity="0.88" filter="url(#shadow)"/>
+  <rect x="88" y="70" width="1024" height="150" rx="24" fill="#ffffff" opacity="0.72"/>
+  <line x1="88" y1="220" x2="1112" y2="220" stroke="#1c1f26" stroke-opacity="0.12"/>
+
+  <text x="128" y="125" fill="#5c6475" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="2">OPERATIONAL DEMO SURFACE</text>
+  <text x="128" y="178" fill="#171923" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="800">Checker Corporate</text>
+  <text x="128" y="205" fill="#5c6475" font-family="Segoe UI, Arial, sans-serif" font-size="18">INN validation, DaData status lookup, health endpoint and JSON API in one local UI.</text>
+
+  <rect x="795" y="100" width="260" height="82" rx="16" fill="#ffffff" stroke="#1c1f26" stroke-opacity="0.12"/>
+  <text x="817" y="130" fill="#5c6475" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">SYSTEM HEALTH</text>
+  <circle cx="824" cy="157" r="7" fill="#0f766e"/>
+  <text x="842" y="163" fill="#171923" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700">Local server is ready</text>
+
+  <line x1="600" y1="220" x2="600" y2="650" stroke="#1c1f26" stroke-opacity="0.12"/>
+  <text x="128" y="276" fill="#5c6475" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="1.5">LOOKUP WORKSPACE</text>
+  <text x="128" y="325" fill="#171923" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">INN</text>
+  <rect x="128" y="344" width="295" height="58" rx="14" fill="#ffffff" stroke="#1c1f26" stroke-opacity="0.14"/>
+  <text x="150" y="380" fill="#171923" font-family="Consolas, monospace" font-size="23">9710083390</text>
+  <rect x="438" y="344" width="118" height="58" rx="14" fill="url(#accent)"/>
+  <text x="464" y="380" fill="#ffffff" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="800">Run check</text>
+
+  <rect x="128" y="430" width="128" height="42" rx="21" fill="#ffffff" stroke="#1c1f26" stroke-opacity="0.14"/>
+  <text x="146" y="456" fill="#171923" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Active demo</text>
+  <rect x="268" y="430" width="116" height="42" rx="21" fill="#ffffff" stroke="#1c1f26" stroke-opacity="0.14"/>
+  <text x="288" y="456" fill="#171923" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Alt sample</text>
+  <rect x="396" y="430" width="128" height="42" rx="21" fill="#ffffff" stroke="#1c1f26" stroke-opacity="0.14"/>
+  <text x="416" y="456" fill="#171923" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Invalid input</text>
+
+  <text x="128" y="535" fill="#5c6475" font-family="Segoe UI, Arial, sans-serif" font-size="18">Browser workflow exercises the same /api/check route as integration tests.</text>
+
+  <text x="640" y="276" fill="#5c6475" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="1.5">RESULT SNAPSHOT</text>
+  <text x="640" y="324" fill="#171923" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="800">Status: ACTIVE</text>
+  <rect x="920" y="285" width="104" height="42" rx="21" fill="#0f766e" opacity="0.12"/>
+  <text x="947" y="312" fill="#115e59" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="800">ACTIVE</text>
+
+  <rect x="640" y="355" width="178" height="78" rx="16" fill="#ffffff" stroke="#1c1f26" stroke-opacity="0.12"/>
+  <text x="660" y="383" fill="#5c6475" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">INN</text>
+  <text x="660" y="414" fill="#171923" font-family="Consolas, monospace" font-size="20" font-weight="700">9710083390</text>
+  <rect x="840" y="355" width="178" height="78" rx="16" fill="#ffffff" stroke="#1c1f26" stroke-opacity="0.12"/>
+  <text x="860" y="383" fill="#5c6475" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">MAPPED STATUS</text>
+  <text x="860" y="414" fill="#171923" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="800">ACTIVE</text>
+
+  <rect x="640" y="463" width="378" height="126" rx="18" fill="#19212f"/>
+  <text x="662" y="496" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" letter-spacing="1.2">PAYLOAD</text>
+  <text x="662" y="531" fill="#e2e8f0" font-family="Consolas, monospace" font-size="15">{ "inn": "9710083390",</text>
+  <text x="662" y="557" fill="#e2e8f0" font-family="Consolas, monospace" font-size="15">  "status": "ACTIVE",</text>
+  <text x="662" y="583" fill="#e2e8f0" font-family="Consolas, monospace" font-size="15">  "message": "Company is active." }</text>
+</svg>
