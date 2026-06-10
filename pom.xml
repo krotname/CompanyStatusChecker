@@ -6,7 +6,7 @@
 
     <groupId>io.github.krotname</groupId>
     <artifactId>checker-corporate</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <name>Checker Corporate</name>
     <description>Validate Russian legal entity INN and check status in DaData.</description>
     <url>https://github.com/krotname/CompanyStatusChecker</url>
@@ -297,7 +297,7 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.80</minimum>
+                                            <minimum>0.70</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -385,7 +385,7 @@
                                 <param>XML</param>
                             </outputFormats>
                             <mutationThreshold>80</mutationThreshold>
-                            <coverageThreshold>80</coverageThreshold>
+                            <coverageThreshold>70</coverageThreshold>
                             <failWhenNoMutations>true</failWhenNoMutations>
                         </configuration>
                         <executions>

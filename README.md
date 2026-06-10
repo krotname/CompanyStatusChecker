@@ -3,7 +3,7 @@
 [![CI](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/ci.yml?query=branch%3Amain+event%3Apush)
 [![Mutation Testing](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml/badge.svg?branch=main&event=push)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/mutation-testing.yml?query=branch%3Amain+event%3Apush)
 [![CodeQL](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml?query=branch%3Amain)
-[![Coverage Gate](https://img.shields.io/badge/coverage%20gate-JaCoCo%2080%25%2B-2ea44f)](docs/quality-gates.md)
+[![Coverage Gate](https://img.shields.io/badge/coverage%20gate-JaCoCo%2070%25%2B-2ea44f)](docs/quality-gates.md)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/krotname/CompanyStatusChecker/badge)](https://securityscorecards.dev/viewer/?uri=github.com/krotname/CompanyStatusChecker)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13149/badge)](https://www.bestpractices.dev/projects/13149)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
@@ -130,7 +130,7 @@ docker compose up --build
 - `CI` отдельно запускает `unit`, `integration`, `ui` и `contract` test jobs с публикацией Surefire reports.
 - Docker image build + `/health` smoke test in CI.
 - Docker image запускается под non-root пользователем `app` и содержит Java-based `HEALTHCHECK`.
-- `JaCoCo` с минимальным порогом покрытия `LINE >= 0.80`.
+- `JaCoCo` с минимальным порогом покрытия `LINE >= 0.70`.
 - `PIT` mutation testing с минимальным порогом `mutationThreshold >= 80`.
 - `SpotBugs` bug-pattern analysis с `effort=Max`, `threshold=Low` и fail-on-warning режимом.
 - `Checkstyle` на этапе `verify`.

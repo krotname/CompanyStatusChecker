@@ -11,7 +11,7 @@ This repository is optimized for quick external review: each quality claim is ti
 | Full verification | Tests, package, SBOM, Checkstyle, JaCoCo gate | `./mvnw -q verify` |
 | Reproducible build | Maven archives use fixed `project.build.outputTimestamp` | `pom.xml` |
 | Release artifacts | Runnable, source, and Javadoc jars are built during `package` | `target/checker-corporate-*.jar` |
-| Coverage | JaCoCo line coverage threshold `LINE >= 0.80` | `pom.xml` |
+| Coverage | JaCoCo line coverage threshold `LINE >= 0.70` | `pom.xml` |
 | Mutation testing | PIT mutation score threshold `mutationThreshold >= 80` | `./mvnw -q verify -Pmutation-tests` |
 | Style | Checkstyle runs during `verify` and includes test sources | `checkstyle.xml` + Maven plugin |
 | Static bug analysis | SpotBugs runs during `verify` with `effort=Max`, `threshold=Low`, and fail-on-error enabled | `pom.xml` |

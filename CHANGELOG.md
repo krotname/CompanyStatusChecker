@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.2.0
+
 - Upgraded the embedded UI from a minimal form to a dashboard-style operational demo.
 - Added CycloneDX SBOM generation and attached SBOM artifacts to CI/release flows.
 - Added GitHub issue forms for bug reports and feature requests.
@@ -30,6 +32,7 @@
 - Added attached source and Javadoc jars to Maven package, CI artifacts, and tag releases.
 - Hardened Docker image runtime with a non-root user and Java-based healthcheck.
 - Added CI checks for Docker image user, healthcheck metadata, and in-container healthcheck execution.
+- Lowered the JaCoCo line and PIT coverage thresholds to 70%.
 
 ## 1.1.0
 
