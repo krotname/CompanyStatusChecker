@@ -29,11 +29,11 @@ jobs:
           - category: contract
             profile: contract-tests
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           persist-credentials: false
       - name: Set up JDK
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5
         with:
           distribution: temurin
           java-version: 21
@@ -42,7 +42,7 @@ jobs:
         run: ./mvnw -B clean test -P${{ matrix.profile }}
       - name: Upload ${{ matrix.category }} test reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: surefire-${{ matrix.category }}-tests
           path: target/surefire-reports
@@ -55,11 +55,11 @@ jobs:
       matrix:
         java: [ 21 ]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           persist-credentials: false
       - name: Set up JDK
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5
         with:
           distribution: temurin
           java-version: ${{ matrix.java }}
@@ -100,7 +100,7 @@ jobs:
           docker exec "$container_id" java -cp /app/app.jar com.krotname.checker.ContainerHealthCheck
           docker logs "$container_id"
       - name: Upload Maven package artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: maven-package-artifacts
           path: |
@@ -108,20 +108,20 @@ jobs:
             !target/original-*.jar
           if-no-files-found: error
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: cyclonedx-sbom
           path: |
             target/bom.xml
             target/bom.json
       - name: Upload SpotBugs report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: spotbugs-report
           path: target/spotbugsXml.xml
           if-no-files-found: error
       - name: Upload JaCoCo coverage
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7
         with:
           files: ./target/site/jacoco/jacoco.xml
           fail_ci_if_error: false
