@@ -44,9 +44,11 @@ jobs:
             echo "Javadoc JAR was not found" >&2
             exit 1
           fi
-          echo "RELEASE_JAR=$release_jar" >> "$GITHUB_ENV"
-          echo "SOURCES_JAR=$sources_jar" >> "$GITHUB_ENV"
-          echo "JAVADOC_JAR=$javadoc_jar" >> "$GITHUB_ENV"
+          {
+            echo "RELEASE_JAR=$release_jar"
+            echo "SOURCES_JAR=$sources_jar"
+            echo "JAVADOC_JAR=$javadoc_jar"
+          } >> "$GITHUB_ENV"
       - name: Generate artifact provenance
         uses: actions/attest@v4
         with:
