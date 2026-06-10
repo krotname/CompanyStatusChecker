@@ -5,6 +5,7 @@
 [![CodeQL](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/krotname/CompanyStatusChecker/actions/workflows/codeql.yml?query=branch%3Amain)
 [![Coverage Gate](https://img.shields.io/badge/coverage%20gate-JaCoCo%2080%25%2B-2ea44f)](docs/quality-gates.md)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/krotname/CompanyStatusChecker/badge)](https://securityscorecards.dev/viewer/?uri=github.com/krotname/CompanyStatusChecker)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13149/badge)](https://www.bestpractices.dev/projects/13149)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-21%20LTS-007396)](https://openjdk.org/projects/jdk/21/)
 
