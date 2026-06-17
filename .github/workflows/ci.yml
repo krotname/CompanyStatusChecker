@@ -42,7 +42,7 @@ jobs:
         run: ./mvnw -B clean test -P${{ matrix.profile }}
       - name: Upload ${{ matrix.category }} test reports
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: surefire-${{ matrix.category }}-tests
           path: target/surefire-reports
@@ -80,7 +80,7 @@ jobs:
       - name: Smoke test Docker image
         run: |
           set -euo pipefail
-          container_id="$(docker run -d -e DADATA_TOKEN=dummy -p 18080:8080 company-status-checker:ci --server 8080)"
+          container_id="$(docker run --user app -d -e DADATA_TOKEN=dummy -p 18080:8080 company-status-checker:ci --server 8080)"
           trap 'docker rm -f "$container_id" >/dev/null 2>&1 || true' EXIT
 
           ready=0
@@ -100,7 +100,7 @@ jobs:
           docker exec "$container_id" java -cp /app/app.jar com.krotname.checker.ContainerHealthCheck
           docker logs "$container_id"
       - name: Upload Maven package artifacts
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: maven-package-artifacts
           path: |
@@ -108,14 +108,14 @@ jobs:
             !target/original-*.jar
           if-no-files-found: error
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: cyclonedx-sbom
           path: |
             target/bom.xml
             target/bom.json
       - name: Upload SpotBugs report
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: spotbugs-report
           path: target/spotbugsXml.xml
