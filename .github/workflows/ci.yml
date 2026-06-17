@@ -80,7 +80,7 @@ jobs:
       - name: Smoke test Docker image
         run: |
           set -euo pipefail
-          container_id="$(docker run -d -e DADATA_TOKEN=dummy -p 18080:8080 company-status-checker:ci --server 8080)"
+          container_id="$(docker run --user app -d -e DADATA_TOKEN=dummy -p 18080:8080 company-status-checker:ci --server 8080)"
           trap 'docker rm -f "$container_id" >/dev/null 2>&1 || true' EXIT
 
           ready=0
