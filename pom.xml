@@ -6,7 +6,7 @@
 
     <groupId>io.github.krotname</groupId>
     <artifactId>checker-corporate</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <name>Checker Corporate</name>
     <description>Validate Russian legal entity INN and check status in DaData.</description>
     <url>https://github.com/krotname/CompanyStatusChecker</url>

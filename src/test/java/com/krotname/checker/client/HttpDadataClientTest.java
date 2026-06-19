@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Tag;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -26,7 +27,7 @@ class HttpDadataClientTest {
 
     @BeforeEach
     void start() throws IOException {
-        server = HttpServer.create(new InetSocketAddress(0), 0);
+        server = HttpServer.create(new InetSocketAddress(InetAddress.getByName("127.0.0.1"), 0), 0);
         server.createContext("/success", this::successResponse);
         server.createContext("/error", this::errorResponse);
         server.createContext("/bad", this::badJsonResponse);
@@ -63,7 +64,7 @@ class HttpDadataClientTest {
     }
 
     private HttpDadataClient createClient(String path) throws Exception {
-        CorporateCheckerConfig config = getConfigWithEndpoint("http://localhost:" + port + path);
+        CorporateCheckerConfig config = getConfigWithEndpoint("http://127.0.0.1:" + port + path);
         return new HttpDadataClient(config);
     }
 
@@ -74,7 +75,7 @@ class HttpDadataClientTest {
                 Duration.class
         );
         constructor.setAccessible(true);
-        return constructor.newInstance("token", endpoint, Duration.ofSeconds(1));
+        return constructor.newInstance("token", endpoint, Duration.ofSeconds(5));
     }
 
     private void successResponse(HttpExchange exchange) throws IOException {

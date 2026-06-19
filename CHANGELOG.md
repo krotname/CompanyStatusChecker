@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 1.2.1 - 2026-06-19
+
+- Hardened CI, release, dependency review, and Scorecard workflows after repository audit.
+- Refreshed the Maven wrapper, Docker runtime checks, and release artifact baseline.
+
 ## 1.2.0
 
 - Upgraded the embedded UI from a minimal form to a dashboard-style operational demo.
