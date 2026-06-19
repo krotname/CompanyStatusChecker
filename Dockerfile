@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jre-jammy AS runtime
+FROM eclipse-temurin:21-jre-jammy@sha256:199aebeb3adcde4910695cdebfe782ada38dadb6cc8013159b58d3724451befd AS runtime
 
 LABEL org.opencontainers.image.title="CompanyStatusChecker" \
       org.opencontainers.image.description="Java 21 service for Russian company INN validation and DaData status checks." \
@@ -12,8 +12,6 @@ RUN groupadd --system app && useradd --system --gid app --home-dir /app --shell 
 COPY target/checker-corporate-*.[0-9].jar app.jar
 
 RUN chown app:app /app/app.jar
-
-ENV DADATA_TOKEN=""
 
 EXPOSE 8080
 

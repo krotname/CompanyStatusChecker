@@ -3,6 +3,6 @@ services:
     build: .
     command: ["--server", "8080"]
     environment:
-      DADATA_TOKEN: ${DADATA_TOKEN}
+      DADATA_TOKEN: ${DADATA_TOKEN:?Set DADATA_TOKEN}
     ports:
       - "8080:8080"
