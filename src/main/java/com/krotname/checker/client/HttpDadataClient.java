@@ -1,5 +1,6 @@
 package com.krotname.checker.client;
 
+import com.google.gson.JsonObject;
 import com.krotname.checker.config.CorporateCheckerConfig;
 
 import java.io.IOException;
@@ -8,7 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.net.http.HttpResponse.BodyHandlers.ofString;
@@ -19,13 +20,13 @@ public final class HttpDadataClient implements DadataClient {
     private final DadataResponseParser parser;
 
     public HttpDadataClient(CorporateCheckerConfig config) {
-        this(HttpClient.newBuilder().build(), config, new DadataResponseParser());
+        this(createHttpClient(config), config, new DadataResponseParser());
     }
 
     HttpDadataClient(HttpClient httpClient, CorporateCheckerConfig config, DadataResponseParser parser) {
-        this.httpClient = httpClient;
-        this.config = config;
-        this.parser = parser;
+        this.httpClient = Objects.requireNonNull(httpClient, "httpClient");
+        this.config = Objects.requireNonNull(config, "config");
+        this.parser = Objects.requireNonNull(parser, "parser");
     }
 
     /**
@@ -35,13 +36,15 @@ public final class HttpDadataClient implements DadataClient {
      */
     @Override
     public Optional<String> fetchCompanyState(String inn) throws IOException, InterruptedException {
-        String payload = String.format("{\"query\":\"%s\",\"count\":1}", inn);
+        JsonObject body = new JsonObject();
+        body.addProperty("query", Objects.requireNonNull(inn, "inn"));
+        body.addProperty("count", 1);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(config.endpoint()))
                 .timeout(config.timeout())
                 .header("Authorization", "Token " + config.token())
                 .header("Content-Type", "application/json; charset=UTF-8")
-                .POST(HttpRequest.BodyPublishers.ofString(payload, StandardCharsets.UTF_8))
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString(), StandardCharsets.UTF_8))
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, ofString(StandardCharsets.UTF_8));
@@ -50,5 +53,12 @@ public final class HttpDadataClient implements DadataClient {
             throw new IOException("Dadata returned status code " + statusCode);
         }
         return parser.extractState(response.body());
+    }
+
+    private static HttpClient createHttpClient(CorporateCheckerConfig config) {
+        CorporateCheckerConfig checkedConfig = Objects.requireNonNull(config, "config");
+        return HttpClient.newBuilder()
+                .connectTimeout(checkedConfig.timeout())
+                .build();
     }
 }

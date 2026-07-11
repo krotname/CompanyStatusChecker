@@ -17,6 +17,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -27,40 +28,62 @@ public final class CheckerUiServer {
     private final int requestedPort;
     private final Gson gson;
     private HttpServer server;
+    private ExecutorService executor;
 
     public CheckerUiServer(CheckerCorporate checker, int requestedPort) {
-        this.checker = checker;
+        this.checker = Objects.requireNonNull(checker, "checker");
+        if (requestedPort < 0 || requestedPort > 65_535) {
+            throw new IllegalArgumentException("requestedPort must be between 0 and 65535");
+        }
         this.requestedPort = requestedPort;
         this.gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
     }
 
-    public int start() throws IOException {
+    public synchronized int start() throws IOException {
         if (server != null) {
             return getPort();
         }
-        server = HttpServer.create(new InetSocketAddress(requestedPort), 0);
-        server.createContext("/", this::handleIndex);
-        server.createContext("/api/check", this::handleCheck);
-        server.createContext("/health", this::handleHealth);
-        server.createContext("/favicon.svg", this::handleFavicon);
-        server.createContext("/favicon.ico", this::handleLegacyFavicon);
-        server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
-        server.start();
-        return getPort();
+        HttpServer createdServer = HttpServer.create(new InetSocketAddress(requestedPort), 0);
+        ExecutorService createdExecutor = Executors.newVirtualThreadPerTaskExecutor();
+        try {
+            createdServer.createContext("/", this::handleIndex);
+            createdServer.createContext("/api/check", this::handleCheck);
+            createdServer.createContext("/health", this::handleHealth);
+            createdServer.createContext("/favicon.svg", this::handleFavicon);
+            createdServer.createContext("/favicon.ico", this::handleLegacyFavicon);
+            createdServer.setExecutor(createdExecutor);
+            createdServer.start();
+        } catch (RuntimeException e) {
+            createdServer.stop(0);
+            createdExecutor.shutdownNow();
+            throw new IOException("Cannot start HTTP server", e);
+        }
+        server = createdServer;
+        executor = createdExecutor;
+        return createdServer.getAddress().getPort();
     }
 
-    public int getPort() {
+    public synchronized int getPort() {
         HttpServer currentServer = Objects.requireNonNull(server, "server");
         return currentServer.getAddress().getPort();
     }
 
-    public void stop() {
+    public synchronized void stop() {
         if (server != null) {
             server.stop(0);
+            server = null;
+        }
+        if (executor != null) {
+            executor.shutdownNow();
+            executor = null;
         }
     }
 
     private void handleIndex(HttpExchange exchange) throws IOException {
+        if (!hasPath(exchange, "/")) {
+            writeStatus(exchange, 404, "Not Found");
+            return;
+        }
         if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
             writeStatus(exchange, 405, "Method Not Allowed");
             return;
@@ -79,6 +102,10 @@ public final class CheckerUiServer {
     }
 
     private void handleFavicon(HttpExchange exchange) throws IOException {
+        if (!hasPath(exchange, "/favicon.svg")) {
+            writeStatus(exchange, 404, "Not Found");
+            return;
+        }
         if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
             writeStatus(exchange, 405, "Method Not Allowed");
             return;
@@ -97,6 +124,10 @@ public final class CheckerUiServer {
     }
 
     private void handleLegacyFavicon(HttpExchange exchange) throws IOException {
+        if (!hasPath(exchange, "/favicon.ico")) {
+            writeStatus(exchange, 404, "Not Found");
+            return;
+        }
         String method = exchange.getRequestMethod();
         if (!"GET".equalsIgnoreCase(method) && !"HEAD".equalsIgnoreCase(method)) {
             writeStatus(exchange, 405, "Method Not Allowed");
@@ -121,6 +152,14 @@ public final class CheckerUiServer {
     }
 
     private void handleHealth(HttpExchange exchange) throws IOException {
+        if (!hasPath(exchange, "/health")) {
+            writeStatus(exchange, 404, "Not Found");
+            return;
+        }
+        if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+            writeStatus(exchange, 405, "Method Not Allowed");
+            return;
+        }
         writeJson(exchange, 200, "{\"status\":\"ok\"}");
     }
 
@@ -129,6 +168,10 @@ public final class CheckerUiServer {
      * Missing query params are returned as a 400 payload, all other logic stays in one place.
      */
     private void handleCheck(HttpExchange exchange) throws IOException {
+        if (!hasPath(exchange, "/api/check")) {
+            writeStatus(exchange, 404, "Not Found");
+            return;
+        }
         if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
             writeStatus(exchange, 405, "Method Not Allowed");
             return;
@@ -193,6 +236,10 @@ public final class CheckerUiServer {
         } catch (IllegalArgumentException e) {
             return value;
         }
+    }
+
+    private boolean hasPath(HttpExchange exchange, String expectedPath) {
+        return expectedPath.equals(exchange.getRequestURI().getPath());
     }
 
 }

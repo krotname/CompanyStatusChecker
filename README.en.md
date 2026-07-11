@@ -34,6 +34,9 @@ cp src/main/resources/checker.example.properties src/main/resources/checker.prop
 java -jar target/checker-corporate-*.jar 9710083390
 ```
 
+For a test or proxied API, override the endpoint with `DADATA_ENDPOINT` or the
+`api.endpoint` key in `checker.properties`.
+
 On Windows, use `mvnw.cmd` instead of `./mvnw`.
 
 ### API
@@ -91,4 +94,4 @@ The main CI workflow exposes separate `unit`, `integration`, `ui`, and `contract
 
 ### License
 
-GPL-3.0 — [LICENSE](LICENSE).
+GPL-3.0-or-later — [LICENSE](LICENSE).

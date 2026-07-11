@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -105,6 +106,30 @@ class CheckerCorporateTest {
         );
         CheckResult result = checker.check("x");
         assertEquals(expectedActive, result.isActive());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"LIQUIDATING", "LIQUIDATED", "BANKRUPT", "REORGANIZING"})
+    void shouldMapKnownInactiveDadataStatuses(String dadataStatus) throws IOException, InterruptedException {
+        CheckerCorporate checker = new CheckerCorporate(
+                new AlwaysValidInnValidator(),
+                stubClient(dadataStatus)
+        );
+
+        assertEquals(CompanyStatus.NOT_ACTIVE, checker.check("x").status());
+    }
+
+    @Test
+    void shouldNotTreatUnknownDadataStatusAsInactive() throws IOException, InterruptedException {
+        CheckerCorporate checker = new CheckerCorporate(
+                new AlwaysValidInnValidator(),
+                stubClient("FUTURE_STATUS")
+        );
+
+        CheckResult result = checker.check("x");
+
+        assertEquals(CompanyStatus.UNKNOWN, result.status());
+        assertEquals("FUTURE_STATUS", result.dadataStatus());
     }
 
     @Test

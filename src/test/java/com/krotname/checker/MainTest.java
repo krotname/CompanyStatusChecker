@@ -40,6 +40,20 @@ class MainTest {
     }
 
     @Test
+    void shouldReportOutOfRangePortForServerMode() {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(out));
+        try {
+            Main.main(new String[]{"--server", "70000"});
+            String output = out.toString();
+            assertTrue(output.contains("Port should be between 1 and 65535."));
+        } finally {
+            System.setOut(originalOut);
+        }
+    }
+
+    @Test
     void shouldExposeHelpCommand() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream originalOut = System.out;

@@ -3,12 +3,17 @@ package com.krotname.checker.ui;
 import com.krotname.checker.CheckerCorporate;
 import com.krotname.checker.client.DadataClient;
 import com.krotname.checker.validation.InnValidator;
+import com.sun.net.httpserver.HttpServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -16,6 +21,8 @@ import java.net.http.HttpResponse;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("integration")
@@ -47,6 +54,86 @@ class CheckerUiServerIntegrationTest {
         assertEquals(200, response.statusCode());
         assertEquals("application/json; charset=UTF-8", response.headers().firstValue("Content-Type").orElse(""));
         assertTrue(response.body().contains("\"status\":\"ok\""));
+    }
+
+    @Test
+    void shouldRejectUnsupportedHealthMethod() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/health"))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(405, response.statusCode());
+        assertTrue(response.body().contains("Method Not Allowed"));
+    }
+
+    @Test
+    void shouldReturnNotFoundForUnknownPath() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/missing")).GET().build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(404, response.statusCode());
+        assertTrue(response.body().contains("Not Found"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "/health/extra",
+            "/healthz",
+            "/api/check/extra?inn=9710083390",
+            "/favicon.svg/extra",
+            "/favicon.ico/extra"
+    })
+    void shouldNotTreatRoutePrefixesAsEndpoints(String path) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri(path)).GET().build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(404, response.statusCode());
+    }
+
+    @Test
+    void shouldRestartAfterStop() throws Exception {
+        server.stop();
+        port = server.start();
+
+        HttpRequest request = HttpRequest.newBuilder(uri("/health")).GET().build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(200, response.statusCode());
+    }
+
+    @Test
+    void shouldRejectOutOfRangeRequestedPort() {
+        CheckerCorporate checker = new CheckerCorporate(
+                new AlwaysValidInnValidator(),
+                stubClient("ACTIVE")
+        );
+
+        assertThrows(IllegalArgumentException.class, () -> new CheckerUiServer(checker, 65_536));
+    }
+
+    @Test
+    void shouldAcceptHighestValidRequestedPort() {
+        CheckerCorporate checker = new CheckerCorporate(
+                new AlwaysValidInnValidator(),
+                stubClient("ACTIVE")
+        );
+
+        assertDoesNotThrow(() -> new CheckerUiServer(checker, 65_535));
+    }
+
+    @Test
+    void shouldReleaseListeningPortOnStop() throws IOException {
+        int releasedPort = port;
+        server.stop();
+
+        HttpServer replacement = HttpServer.create(
+                new InetSocketAddress(InetAddress.getLoopbackAddress(), releasedPort),
+                0
+        );
+        try {
+            replacement.start();
+        } finally {
+            replacement.stop(0);
+        }
     }
 
     @Test
@@ -114,6 +201,7 @@ class CheckerUiServerIntegrationTest {
         assertEquals("text/html; charset=UTF-8", response.headers().firstValue("Content-Type").orElse(""));
         assertTrue(response.body().contains("<h1>Checker Corporate</h1>"));
         assertTrue(response.body().contains("System health"));
+        assertTrue(response.body().contains(".status-pill.unknown"));
     }
 
     @Test
@@ -134,6 +222,14 @@ class CheckerUiServerIntegrationTest {
         assertEquals(200, response.statusCode());
         assertEquals("image/svg+xml; charset=UTF-8", response.headers().firstValue("Content-Type").orElse(""));
         assertTrue(response.body().isEmpty());
+    }
+
+    @Test
+    void shouldServeLegacyFaviconForGetWithBody() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder(uri("/favicon.ico")).GET().build();
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode());
+        assertTrue(response.body().contains("<svg"));
     }
 
     @Test

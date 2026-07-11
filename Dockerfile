@@ -3,7 +3,7 @@ FROM eclipse-temurin:21-jre-jammy@sha256:199aebeb3adcde4910695cdebfe782ada38dadb
 LABEL org.opencontainers.image.title="CompanyStatusChecker" \
       org.opencontainers.image.description="Java 21 service for Russian company INN validation and DaData status checks." \
       org.opencontainers.image.source="https://github.com/krotname/CompanyStatusChecker" \
-      org.opencontainers.image.licenses="GPL-3.0-only"
+      org.opencontainers.image.licenses="GPL-3.0-or-later"
 
 WORKDIR /app
 

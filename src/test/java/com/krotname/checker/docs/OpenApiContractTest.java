@@ -26,6 +26,7 @@ class OpenApiContractTest {
                 () -> assertTrue(yaml.contains("        \"400\":")),
                 () -> assertTrue(yaml.contains("        \"405\":")),
                 () -> assertTrue(yaml.contains("                  status:")),
+                () -> assertTrue(yaml.contains("                      - UNKNOWN")),
                 () -> assertTrue(yaml.contains("                  dadataStatus:")),
                 () -> assertTrue(yaml.contains("                    example: missing_inn"))
         );
