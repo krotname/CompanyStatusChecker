@@ -15,12 +15,14 @@ class CheckResultTest {
         CheckResult unavailable = CheckResult.serviceUnavailable("x", "err");
         CheckResult active = CheckResult.active("x", "ACTIVE");
         CheckResult notActive = CheckResult.notActive("x", "BANKRUPT");
+        CheckResult unknown = CheckResult.unknown("x", "FUTURE_STATUS");
 
         assertEquals(CompanyStatus.INVALID_INPUT, invalid.status());
         assertEquals(CompanyStatus.NOT_FOUND, notFound.status());
         assertEquals(CompanyStatus.SERVICE_UNAVAILABLE, unavailable.status());
         assertEquals(CompanyStatus.ACTIVE, active.status());
         assertEquals(CompanyStatus.NOT_ACTIVE, notActive.status());
+        assertEquals(CompanyStatus.UNKNOWN, unknown.status());
         assertEquals("x", unavailable.inn());
         assertTrue(unavailable.message().contains("err"));
     }

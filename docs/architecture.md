@@ -30,7 +30,8 @@ The public domain method `CheckerCorporate.check` returns explicit `CheckResult`
 - `INVALID_INPUT` for failed INN validation.
 - `NOT_FOUND` for valid INN with no DaData suggestion.
 - `SERVICE_UNAVAILABLE` for IO or interruption paths.
-- `ACTIVE` / `NOT_ACTIVE` for mapped DaData statuses.
+- `ACTIVE` / `NOT_ACTIVE` for known DaData statuses.
+- `UNKNOWN` when DaData introduces a status that the application does not yet recognize.
 
 This keeps CLI, UI, tests, and future integrations aligned around one response contract.
 

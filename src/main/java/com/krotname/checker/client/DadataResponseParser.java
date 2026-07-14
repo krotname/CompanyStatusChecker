@@ -45,12 +45,14 @@ public final class DadataResponseParser {
             }
 
             JsonElement statusElement = stateElement.getAsJsonObject().get(FIELD_STATUS);
-            if (statusElement == null || !statusElement.isJsonPrimitive()) {
+            if (statusElement == null || !statusElement.isJsonPrimitive()
+                    || !statusElement.getAsJsonPrimitive().isString()) {
                 return Optional.empty();
             }
 
-            return Optional.of(statusElement.getAsString());
-        } catch (Exception ignored) {
+            String status = statusElement.getAsString();
+            return status.isBlank() ? Optional.empty() : Optional.of(status);
+        } catch (RuntimeException ignored) {
             return Optional.empty();
         }
     }

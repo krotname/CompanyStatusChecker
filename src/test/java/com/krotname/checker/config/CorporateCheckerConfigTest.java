@@ -7,6 +7,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Tag("unit")
 class CorporateCheckerConfigTest {
@@ -36,8 +37,38 @@ class CorporateCheckerConfigTest {
         try {
             CorporateCheckerConfig config = CorporateCheckerConfig.fromEnvironmentOrResource();
             assertEquals("from-resource-token", config.token());
-            assertEquals(DEFAULT_ENDPOINT, config.endpoint());
+            assertEquals("http://example.local/resource", config.endpoint());
             assertEquals(Duration.ofSeconds(5), config.timeout());
+        } finally {
+            System.clearProperty("DADATA_TOKEN");
+            System.clearProperty("DADATA_ENDPOINT");
+        }
+    }
+
+    @Test
+    void shouldLoadOnlyMissingEndpointFromResource() {
+        System.setProperty("DADATA_TOKEN", "runtime-token");
+        System.clearProperty("DADATA_ENDPOINT");
+        try {
+            CorporateCheckerConfig config = CorporateCheckerConfig.fromEnvironmentOrResource();
+
+            assertEquals("runtime-token", config.token());
+            assertEquals("http://example.local/resource", config.endpoint());
+        } finally {
+            System.clearProperty("DADATA_TOKEN");
+            System.clearProperty("DADATA_ENDPOINT");
+        }
+    }
+
+    @Test
+    void shouldLoadOnlyMissingTokenFromResource() {
+        System.clearProperty("DADATA_TOKEN");
+        System.setProperty("DADATA_ENDPOINT", "https://example.com/runtime");
+        try {
+            CorporateCheckerConfig config = CorporateCheckerConfig.fromEnvironmentOrResource();
+
+            assertEquals("from-resource-token", config.token());
+            assertEquals("https://example.com/runtime", config.endpoint());
         } finally {
             System.clearProperty("DADATA_TOKEN");
             System.clearProperty("DADATA_ENDPOINT");
@@ -58,5 +89,22 @@ class CorporateCheckerConfigTest {
         CorporateCheckerConfig config = CorporateCheckerConfig.fromToken("x");
         assertNotNull(config.token());
         assertEquals("x", config.token());
+    }
+
+    @Test
+    void shouldRejectBlankTokenFactoryValue() {
+        assertThrows(IllegalArgumentException.class, () -> CorporateCheckerConfig.fromToken("  "));
+    }
+
+    @Test
+    void shouldRejectInvalidEndpointOverride() {
+        System.setProperty("DADATA_TOKEN", "token");
+        System.setProperty("DADATA_ENDPOINT", "file:///tmp/not-http");
+        try {
+            assertThrows(IllegalArgumentException.class, CorporateCheckerConfig::fromEnvironmentOrResource);
+        } finally {
+            System.clearProperty("DADATA_TOKEN");
+            System.clearProperty("DADATA_ENDPOINT");
+        }
     }
 }

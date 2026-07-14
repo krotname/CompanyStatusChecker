@@ -49,6 +49,9 @@ set DADATA_TOKEN=your_token   # Windows
 export DADATA_TOKEN=your_token # macOS/Linux
 ```
 
+Для тестового или проксируемого API endpoint можно переопределить через `DADATA_ENDPOINT`
+либо ключ `api.endpoint` в `checker.properties`.
+
 На Windows используйте `mvnw.cmd` вместо `./mvnw`.
 
 #### CLI

@@ -1,5 +1,8 @@
 package com.krotname.checker;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -16,7 +19,6 @@ import java.time.Duration;
 public final class ContainerHealthCheck {
     static final String DEFAULT_ENDPOINT = "http://127.0.0.1:8080/health";
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(2);
-    private static final String HEALTHY_PAYLOAD = "\"status\":\"ok\"";
 
     private ContainerHealthCheck() {
     }
@@ -40,11 +42,25 @@ public final class ContainerHealthCheck {
                     .GET()
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-            return response.statusCode() == 200 && response.body().contains(HEALTHY_PAYLOAD);
+            return response.statusCode() == 200 && hasHealthyPayload(response.body());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return false;
         } catch (IOException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    private static boolean hasHealthyPayload(String body) {
+        try {
+            JsonElement root = JsonParser.parseString(body);
+            if (!root.isJsonObject()) {
+                return false;
+            }
+            JsonElement status = root.getAsJsonObject().get("status");
+            return status != null && status.isJsonPrimitive() && status.getAsJsonPrimitive().isString()
+                    && "ok".equals(status.getAsString());
+        } catch (RuntimeException e) {
             return false;
         }
     }

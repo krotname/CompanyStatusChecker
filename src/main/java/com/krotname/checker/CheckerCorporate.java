@@ -63,12 +63,10 @@ public final class CheckerCorporate {
     private CheckResult fromDadataStatus(String inn, String statusValue) {
         // Keep mapping rules explicit in one place to avoid leaking raw DaData statuses into domain logic.
         String normalized = statusValue == null ? "" : statusValue.trim().toUpperCase(Locale.ROOT);
-        if (normalized.equals("ACTIVE")) {
-            return CheckResult.active(inn, statusValue);
-        }
-        if (normalized.equals("LIQUIDATED")) {
-            return CheckResult.notActive(inn, statusValue);
-        }
-        return CheckResult.notActive(inn, statusValue);
+        return switch (normalized) {
+            case "ACTIVE" -> CheckResult.active(inn, statusValue);
+            case "LIQUIDATING", "LIQUIDATED", "BANKRUPT", "REORGANIZING" -> CheckResult.notActive(inn, statusValue);
+            default -> CheckResult.unknown(inn, statusValue);
+        };
     }
 }

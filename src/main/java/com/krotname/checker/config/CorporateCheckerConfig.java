@@ -2,7 +2,7 @@ package com.krotname.checker.config;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.net.URI;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Properties;
@@ -21,9 +21,12 @@ public final class CorporateCheckerConfig {
     private final Duration timeout;
 
     private CorporateCheckerConfig(String token, String endpoint, Duration timeout) {
-        this.token = token;
-        this.endpoint = endpoint;
-        this.timeout = timeout;
+        this.token = requireNonBlank(token, "token");
+        this.endpoint = validateEndpoint(endpoint);
+        this.timeout = Objects.requireNonNull(timeout, "timeout");
+        if (timeout.isZero() || timeout.isNegative()) {
+            throw new IllegalArgumentException("timeout must be positive");
+        }
     }
 
     /**
@@ -35,18 +38,27 @@ public final class CorporateCheckerConfig {
     public static CorporateCheckerConfig fromEnvironmentOrResource() {
         // Resolve from explicit runtime settings first; fallback to resource only when explicitly absent.
         String token = resolveConfigValue("DADATA_TOKEN");
-        String endpoint = resolveConfigValue("DADATA_ENDPOINT", DEFAULT_ENDPOINT);
+        String endpoint = resolveConfigValue("DADATA_ENDPOINT");
         Duration timeout = DEFAULT_TIMEOUT;
 
-        if ((token == null || token.isBlank()) && shouldLoadFromResource()) {
-            token = loadFromResource();
+        if (isBlank(token) || isBlank(endpoint)) {
+            Properties properties = loadFromResource();
+            if (isBlank(token)) {
+                token = properties.getProperty("token");
+            }
+            if (isBlank(endpoint)) {
+                endpoint = properties.getProperty("api.endpoint");
+            }
         }
 
-        if (token == null || token.isBlank()) {
+        if (isBlank(token)) {
             throw new IllegalStateException("DADATA_TOKEN is missing. Set env var DADATA_TOKEN or create resources/checker.properties.");
         }
+        if (isBlank(endpoint)) {
+            endpoint = DEFAULT_ENDPOINT;
+        }
 
-        return new CorporateCheckerConfig(token.trim(), endpoint.trim(), timeout);
+        return new CorporateCheckerConfig(token, endpoint, timeout);
     }
 
     /**
@@ -54,16 +66,12 @@ public final class CorporateCheckerConfig {
      * This keeps local test overrides explicit and deployment overrides isolated.
      */
     private static String resolveConfigValue(String key) {
-        return resolveConfigValue(key, null);
-    }
-
-    private static String resolveConfigValue(String key, String defaultValue) {
         String propertyValue = System.getProperty(key);
-        if (propertyValue != null) {
+        if (!isBlank(propertyValue)) {
             return propertyValue;
         }
         String envValue = System.getenv(key);
-        return envValue == null ? defaultValue : envValue;
+        return isBlank(envValue) ? null : envValue;
     }
 
     public String token() {
@@ -79,27 +87,16 @@ public final class CorporateCheckerConfig {
     }
 
     /**
-     * Checks resource availability before attempting classpath fallback loading.
-     */
-    private static boolean shouldLoadFromResource() {
-        return CorporateCheckerConfig.class.getClassLoader().getResource(DEFAULT_RESOURCE) != null;
-    }
-
-    /**
      * Reads checker.properties from classpath when present.
      */
-    private static String loadFromResource() {
+    private static Properties loadFromResource() {
+        Properties props = new Properties();
         try (InputStream stream = CorporateCheckerConfig.class.getClassLoader().getResourceAsStream(DEFAULT_RESOURCE)) {
             if (stream == null) {
-                return null;
+                return props;
             }
-            Properties props = new Properties();
             props.load(stream);
-            String token = props.getProperty("token");
-            if (token != null && token.getBytes(StandardCharsets.UTF_8).length > 0) {
-                return token;
-            }
-            return null;
+            return props;
         } catch (IOException e) {
             throw new IllegalStateException("Cannot read checker.properties", e);
         }
@@ -111,5 +108,33 @@ public final class CorporateCheckerConfig {
     public static CorporateCheckerConfig fromToken(String token) {
         Objects.requireNonNull(token, "token");
         return new CorporateCheckerConfig(token, DEFAULT_ENDPOINT, DEFAULT_TIMEOUT);
+    }
+
+    private static boolean isBlank(String value) {
+        return value == null || value.isBlank();
+    }
+
+    private static String requireNonBlank(String value, String name) {
+        Objects.requireNonNull(value, name);
+        String normalized = value.trim();
+        if (normalized.isEmpty()) {
+            throw new IllegalArgumentException(name + " must not be blank");
+        }
+        return normalized;
+    }
+
+    private static String validateEndpoint(String value) {
+        String normalized = requireNonBlank(value, "endpoint");
+        URI uri;
+        try {
+            uri = URI.create(normalized);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("endpoint must be a valid absolute HTTP(S) URI", e);
+        }
+        String scheme = uri.getScheme();
+        if (uri.getHost() == null || !("http".equalsIgnoreCase(scheme) || "https".equalsIgnoreCase(scheme))) {
+            throw new IllegalArgumentException("endpoint must be a valid absolute HTTP(S) URI");
+        }
+        return uri.toString();
     }
 }

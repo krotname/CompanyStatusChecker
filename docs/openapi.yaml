@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Checker Corporate API
-  version: 1.1.0
+  version: 1.2.1
   description: |
     API for INN validation and DaData-backed legal entity status checks.
 servers:
@@ -23,6 +23,8 @@ paths:
                   status:
                     type: string
                     example: ok
+        "405":
+          description: HTTP method not supported for this endpoint
   /api/check:
     get:
       summary: Check company status by INN
@@ -46,9 +48,17 @@ paths:
                     type: string
                   status:
                     type: string
+                    enum:
+                      - ACTIVE
+                      - NOT_ACTIVE
+                      - NOT_FOUND
+                      - INVALID_INPUT
+                      - SERVICE_UNAVAILABLE
+                      - UNKNOWN
                   dadataStatus:
-                    type: string
-                    nullable: true
+                    type:
+                      - string
+                      - "null"
                   message:
                     type: string
         "400":

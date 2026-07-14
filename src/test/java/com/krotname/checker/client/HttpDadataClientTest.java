@@ -1,5 +1,7 @@
 package com.krotname.checker.client;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.krotname.checker.config.CorporateCheckerConfig;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -24,12 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class HttpDadataClientTest {
     private HttpServer server;
     private int port;
+    private volatile String requestBody;
 
     @BeforeEach
     void start() throws IOException {
         server = HttpServer.create(new InetSocketAddress(InetAddress.getByName("127.0.0.1"), 0), 0);
         server.createContext("/success", this::successResponse);
         server.createContext("/error", this::errorResponse);
+        server.createContext("/redirect", this::redirectResponse);
         server.createContext("/bad", this::badJsonResponse);
         server.start();
         port = server.getAddress().getPort();
@@ -48,11 +52,21 @@ class HttpDadataClientTest {
         Optional<String> state = client.fetchCompanyState("9710083390");
         assertTrue(state.isPresent());
         assertEquals("ACTIVE", state.get());
+
+        JsonObject payload = JsonParser.parseString(requestBody).getAsJsonObject();
+        assertEquals("9710083390", payload.get("query").getAsString());
+        assertEquals(1, payload.get("count").getAsInt());
     }
 
     @Test
     void shouldRejectNon2xxResponses() throws Exception {
         HttpDadataClient client = createClient("/error");
+        assertThrows(IOException.class, () -> client.fetchCompanyState("9710083390"));
+    }
+
+    @Test
+    void shouldRejectRedirectBoundaryStatus() throws Exception {
+        HttpDadataClient client = createClient("/redirect");
         assertThrows(IOException.class, () -> client.fetchCompanyState("9710083390"));
     }
 
@@ -79,6 +93,7 @@ class HttpDadataClientTest {
     }
 
     private void successResponse(HttpExchange exchange) throws IOException {
+        requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         byte[] payload = """
                 {"suggestions":[{"data":{"state":{"status":"ACTIVE"}}}]}
                 """.getBytes(StandardCharsets.UTF_8);
@@ -88,6 +103,11 @@ class HttpDadataClientTest {
     private void errorResponse(HttpExchange exchange) throws IOException {
         byte[] payload = "downstream error".getBytes(StandardCharsets.UTF_8);
         writeJson(exchange, 500, payload);
+    }
+
+    private void redirectResponse(HttpExchange exchange) throws IOException {
+        byte[] payload = "redirect".getBytes(StandardCharsets.UTF_8);
+        writeJson(exchange, 300, payload);
     }
 
     private void badJsonResponse(HttpExchange exchange) throws IOException {

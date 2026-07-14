@@ -33,6 +33,18 @@ class ContainerHealthCheckTest {
     }
 
     @Test
+    void shouldPassForFormattedHealthyPayload() throws IOException {
+        String endpoint = startHealthEndpoint(200, "{\n  \"status\": \"ok\"\n}");
+        assertTrue(ContainerHealthCheck.isHealthy(endpoint, Duration.ofSeconds(2)));
+    }
+
+    @Test
+    void shouldRejectHealthySubstringOutsideStatusField() throws IOException {
+        String endpoint = startHealthEndpoint(200, "{\"message\":\"status ok\",\"status\":\"starting\"}");
+        assertFalse(ContainerHealthCheck.isHealthy(endpoint, Duration.ofSeconds(2)));
+    }
+
+    @Test
     void shouldFailForUnexpectedPayload() throws IOException {
         String endpoint = startHealthEndpoint(200, "{\"status\":\"starting\"}");
         assertFalse(ContainerHealthCheck.isHealthy(endpoint, Duration.ofSeconds(2)));

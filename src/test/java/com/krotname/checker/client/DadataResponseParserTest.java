@@ -39,6 +39,8 @@ class DadataResponseParserTest {
             "{\"suggestions\":[{\"data\":\"not-an-object\"}]}",
             "{\"suggestions\":[{\"data\":{\"state\":\"not-an-object\"}}]}",
             "{\"suggestions\":[{\"data\":{\"state\":{\"status\":{}}}}]}",
+            "{\"suggestions\":[{\"data\":{\"state\":{\"status\":123}}}]}",
+            "{\"suggestions\":[{\"data\":{\"state\":{\"status\":\"  \"}}}]}",
             "not-json"
     })
     void shouldReturnEmptyForUnexpectedPayloadShapes(String json) {

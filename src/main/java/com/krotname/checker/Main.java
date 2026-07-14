@@ -1,6 +1,7 @@
 package com.krotname.checker;
 
 import com.krotname.checker.ui.CheckerUiServer;
+import com.krotname.checker.validation.InnValidator;
 
 import java.io.IOException;
 
@@ -31,13 +32,26 @@ public final class Main {
                     return;
                 }
             }
+            if (port < 1 || port > 65_535) {
+                System.out.println("Port should be between 1 and 65535.");
+                printHelp();
+                return;
+            }
             runServer(port);
             return;
         }
 
         String inn = args[0];
-        CheckerCorporate checker = new CheckerCorporate();
-        System.out.println(checker.check(inn).message());
+        if (!new InnValidator().isValid(inn)) {
+            System.out.println(com.krotname.checker.model.CheckResult.invalidInput(inn).message());
+            return;
+        }
+        try {
+            CheckerCorporate checker = new CheckerCorporate();
+            System.out.println(checker.check(inn).message());
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.printf("Configuration error: %s%n", e.getMessage());
+        }
     }
 
     private static void runServer(int port) {
@@ -55,6 +69,8 @@ public final class Main {
         } catch (IOException e) {
             String message = e.getMessage() == null ? "unknown IO error" : e.getMessage();
             System.out.printf("Failed to start server: %s%n", message);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.printf("Configuration error: %s%n", e.getMessage());
         }
     }
 

@@ -26,6 +26,10 @@ public record CheckResult(
         return new CheckResult(inn, CompanyStatus.NOT_ACTIVE, rawStatus, "Организация не активна.");
     }
 
+    public static CheckResult unknown(String inn, String rawStatus) {
+        return new CheckResult(inn, CompanyStatus.UNKNOWN, rawStatus, "Статус организации не распознан.");
+    }
+
     public boolean isActive() {
         return status.isActive();
     }
